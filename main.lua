@@ -1,4 +1,4 @@
-pancake =  require "pancake"
+pancake =  require "pancake" 
 function love.load()
 	pancake.init({window = {pixelSize = love.graphics.getHeight()/64}}) --Initiating pancake and setting pixelSize, so that the pancake display will be the height of the window! pixelSize is how many pixels every pancake pixel should take
 end
