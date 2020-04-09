@@ -1,10 +1,19 @@
-# Pancake Wiki
-On this repo you will find many important things in Wiki section, such as: tutorials, general info and documentation! I also might post info about jams made with pancake (if such a thing would ever exist)
+# PANCAKE
 
-https://github.com/pancake-library/pancake/wiki
+Pancake is a simple to use library that provides useful functions on tip of your fingers!
 
-So come along and stay on this site if you want to learn about pancake library and how to use it!
+## It's easy
 
-If you're completely new, jump to Getting Started Section
+You just have to require it as a lua library:
 
-If you've already read this articule, you can explore docs of pancake and create your very own game. Have fun!
+`pancake = reuqire "pancake"`
+
+and it works out of the box!
+
+## Powerfull tool for jams
+
+Making a game in 10 minutes with pancake library is relly not that hard!
+
+## Tutorials and documentation
+
+On wiki you have free access to tutorials, documentation and more!
