@@ -12,7 +12,7 @@ and it works out of the box!
 
 ## Powerfull tool for jams
 
-Making a game in 10 minutes with pancake library is relly not that hard!
+Making a game in 10 minutes with pancake library is realyy not that hard!
 
 ## Tutorials and documentation
 
