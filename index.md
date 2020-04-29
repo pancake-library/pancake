@@ -9,3 +9,5 @@ And the name? Well, creating games with it is as easy as making a pancake, but r
 
 ### **Have fun baking!**
 ![](https://i.imgur.com/tHYz95W.png) ~Pancake icon by [Unsua Design](https://www.instagram.com/unsuadesign/)
+
+link rel="icon" href="/favicon.ico" type="image/x-icon" />
