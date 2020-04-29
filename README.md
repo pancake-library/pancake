@@ -10,7 +10,7 @@ You just have to require it as a lua library:
 
 and it works out of the box!
 
-## Powerfull tool for jams
+## Powerful tool for jams
 
 Making a game in 10 minutes with pancake library is really not that hard!
 
