@@ -1,4 +1,4 @@
-# PANCAKE
+# Pancake library by MightyPancake
 
 Pancake is a simple to use library that provides useful functions on tip of your fingers!
 
