@@ -1,1 +1,0 @@
-Pancake Library by MightyPancake
