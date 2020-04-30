@@ -16,7 +16,7 @@ Collections contain all pancake made things such as:
 
 * `buttons`
 
-* `objects`
+* [`objects`](http://mightypancake.games/documentation/topics/objects)
 
 * `timers`
 
