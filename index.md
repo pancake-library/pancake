@@ -5,7 +5,7 @@ Seriously, it's really as simple as it can be while leaving space for the user. 
 
 And the name? Well, creating games with it is as easy as making a pancake, but rewarding as a delicious cake (hence, such a logo). With that being said, you can now start your journey! 
 
-[How to get started?](https://github.com/pancake-library/pancake/wiki/Getting-Started)
+[How to get started?](http://mightypancake.games/tutorials/Getting_Started)
 
 ### **Have fun baking!**
 ![](https://i.imgur.com/tHYz95W.png) ~Pancake icon by [Unsua Design](https://www.instagram.com/unsuadesign/)
