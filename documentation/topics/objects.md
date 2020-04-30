@@ -6,13 +6,13 @@ Pancake object is part of data that you give to pancake so it can simulate thing
 
 # Object's attributes
 ### Here are the values that **every pancake object should have:**
-* x <- horizontal coordinate of the object. Combined with "y", it defines the position of the object. This defines where the left edge of an object should be.
+* x <- Horizontal coordinate of the object. Combined with "y", it defines the position of the object. This defines where the left edge of an object should be.
 
-* y <- vertical coordinate of the object. Combined with "x", it defines the position of the object. This defines where the top edge of an object should be.
+* y <- Vertical coordinate of the object. Combined with "x", it defines the position of the object. This defines where the top edge of an object should be.
 
-* width <- the width of the object. It's used for collision and such.
+* width <- The width of the object. It's used for collision and such.
 
-* height <- the height of the object. It's used for collision and such.
+* height <- The height of the object. It's used for collision and such.
 
 ### Here are some parameters that are **optional:**
 
@@ -25,7 +25,7 @@ Pancake object is part of data that you give to pancake so it can simulate thing
 * [layer](http://mightypancake.games/documentation/topics/layers) <- Defines what [layer](http://mightypancake.games/documentation/topics/layers) the object should be in.
 ### Other (less important):
 
-* [animation](http://mightypancake.games/documentation/topics/animations) <- this contains the animation table of the object. You generally don't use it anywhere because you can use pancake.changeAnimation(object, animation_name) and that's easier. This table contains frames, speed, the current time of frame and its name in it.
+* [animation](http://mightypancake.games/documentation/topics/animations) <- This contains the animation table of the object. You generally don't use it anywhere because you can use pancake.changeAnimation(object, animation_name) and that's easier. This table contains frames, speed, the current time of frame and its name in it.
 
 * [forces](http://mightypancake.games/documentation/topics/layers)<- This contains all [forces](http://mightypancake.games/documentation/topics/layers) that are being applied on the object *(if physics were applied to it)* such as gravity.
 
