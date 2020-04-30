@@ -1,4 +1,4 @@
-#Documentation
+# Documentation
 
 Welcome to the documentation of pancake library! This page was created to navigate through the things you can learn about this tool yourself, which means without any tutorials and such. Here you can see how things work! All of the informations are split into two sections:
 
