@@ -27,7 +27,7 @@ Pancake object is part of data that you give to pancake so it can simulate thing
 
 * [animation](http://mightypancake.games/documentation/topics/animations) <- This contains the animation table of the object. You generally don't use it anywhere because you can use pancake.changeAnimation(object, animation_name) and that's easier. This table contains frames, speed, the current time of frame and its name in it.
 
-* [forces](http://mightypancake.games/documentation/topics/layers)<- This contains all [forces](http://mightypancake.games/documentation/topics/layers) that are being applied on the object *(if physics were applied to it)* such as gravity.
+* [forces](http://mightypancake.games/documentation/topics/forces)<- This contains all [forces](http://mightypancake.games/documentation/topics/forces) that are being applied on the object *(if physics were applied to it)* such as gravity.
 
 ### Physic attributes
 
