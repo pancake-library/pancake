@@ -24,11 +24,11 @@ Pancake has 3 main callbacks:
 
 Here are some LÖVE callbacks that you might want to get familiar with:
 
-* **love.load()** <- Triggers after your project loads
+* **[love.load()](https://love2d.org/wiki/love.load)** <- Triggers after your project loads
 
-* **love.update(dt)** <- Triggers after dt amount of seconds (NOTE: dt is not a constant value and it's usually small)
+* **[love.update(dt)](https://love2d.org/wiki/love.update)** <- Triggers after dt amount of seconds (NOTE: dt is not a constant value and it's usually small)
 
-* **love.draw()** <- Triggers on each frame being drawn. Here's where you want to render things!
+* **[love.draw()](https://love2d.org/wiki/love.draw)** <- Triggers on each frame being drawn. Here's where you want to render things!
 
 ## Next steps
 
