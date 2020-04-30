@@ -1,4 +1,4 @@
-# `pancake.addObject()`
+# pancake.addObject()
 
 ## Description
 
