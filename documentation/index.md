@@ -13,9 +13,9 @@ Often both types of articles have links to topics/functions that are from the sa
 
 ## Topics
 
-* [Settings](https://github.com/pancake-library/pancake-wiki/wiki/Settings)
+* [Settings](http://mightypancake.games/documentation/topics/settings)
 
-* [Pancake Attributes](http://mightypancake.games/documentation/topics/settings)
+* [Pancake Attributes](http://mightypancake.games/documentation/topics/pancake_attributes)
 
 * [Objects](http://mightypancake.games/documentation/topics/objects)
 
