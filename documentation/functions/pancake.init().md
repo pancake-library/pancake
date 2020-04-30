@@ -1,4 +1,4 @@
-# `pancake.init(settings)`
+# pancake.init(settings)
 
 ## Description
 
