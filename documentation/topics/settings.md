@@ -14,7 +14,7 @@ They are a set of parameters that define how pancake should behave. This article
 
 * `autoDraw` (true) <- Defines whether pancake should draw display automatically or if the user wants to do it themselve. You can always draw pancake.canvas!
 
-* `layerDepth` (0.75) <- Defines layer depth for the game. You can read more on that https://github.com/pancake-library/pancake-wiki/wiki/Layers#layer-depth[here].
+* `layerDepth` (0.75) <- Defines layer depth for the game. You can read more on that [here](http://mightypancake.games/documentation/topics/layers).
 
 * `meter` (10) <- Defines how many pancake pixels is equal to a meter.
 
