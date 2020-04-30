@@ -6,13 +6,13 @@ The goal of this tutorial is to create a simple platformer game, where the playe
 
 ## Before you start
 
-Make sure you're familiar with https://github.com/pancake-library/pancake-wiki/wiki/Getting-Started[Getting Started]  article, so you know the basics.
+Make sure you're familiar with [Getting Started](http://mightypancake.games/tutorials/Getting_Started)  article, so you know the basics.
 
-Also, keep in mind this tutorial is just kept as simple as possible, so it misses various information on different topics. However, whenever something is mentioned here you can always (and it's very advised to) click the link discussing the topic/function. Also, if you get lost, you can always visit the https://github.com/pancake-library/platformer-template[platformer template] to see the goal and notice any mistakes of yours! With that being said, let's jump right into action!
+Also, keep in mind this tutorial is just kept as simple as possible, so it misses various information on different topics. However, whenever something is mentioned here you can always (and it's very advised to) click the link discussing the topic/function. Also, if you get lost, you can always visit the [platformer template](https://github.com/pancake-library/platformer-template) to see the goal and notice any mistakes of yours! With that being said, let's jump right into action!
 
 ## Quick set up
 
-To start, download this empty game template for pancake library https://github.com/pancake-library/empty-template[here].
+To start, download this empty game template for pancake library [here](https://github.com/pancake-library/empty-template).
 
 After this, you have to search for the `main.lua` file (it should be in the main folder). Once you've found it, double click it and edit it in an editor of your choice.
 
