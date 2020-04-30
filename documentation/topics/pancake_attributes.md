@@ -1,4 +1,6 @@
-# What are pancake attributes?
+# Pancake attributes
+
+## What are pancake attributes?
 
 They're everything that pancake collects and works with. Everything that is used, every piece of data passed to pancake (well, at least every important one). You can access every attribute by just typing:
 
