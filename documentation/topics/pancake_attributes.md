@@ -30,7 +30,7 @@ Timers and objects items of a collection have their unique ID parameters.
 
 ## Settings
 
-Settings are what define how pancake behaves. You can read more about them https://github.com/pancake-library/pancake-wiki/wiki/Settings[here].
+Settings are what define how pancake behaves. You can read more about them (http://mightypancake.games/documentation/topics/settings)[here].
 
 ## Other
 
