@@ -10,3 +10,15 @@ Welcome to the documentation of pancake library! This page was created to naviga
 **NOTE:**
 
 Often both types of articles have links to topics/functions that are from the same family. For example when you're reading about objects in one of the topics, you can jump straight to a function that creates them!
+
+## Topics
+
+* [Settings](https://github.com/pancake-library/pancake-wiki/wiki/Settings)
+
+* [Pancake Attributes](http://mightypancake.games/documentation/topics/settings)
+
+* [Objects](http://mightypancake.games/documentation/topics/objects)
+
+* [Layers](http://mightypancake.games/documentation/topics/layers)
+
+* [Animations](http://mightypancake.games/documentation/topics/animations)
