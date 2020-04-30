@@ -1,4 +1,6 @@
-# Goal
+# Platformer tutorial
+
+## Goal
 
 The goal of this tutorial is to create a simple platformer game, where the player has to jump between platforms. It's not a complicated game, but once you get how the library works you can develop it however you want.
 
