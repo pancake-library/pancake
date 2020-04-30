@@ -1,4 +1,6 @@
-# What are pancake settings?
+# Settings
+
+## What are pancake settings?
 
 They are a set of parameters that define how pancake should behave. This article contains everything you need to know to configure your pancake library for your needs!
 
