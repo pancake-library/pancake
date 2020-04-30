@@ -34,11 +34,11 @@ Settings are what define how pancake behaves. You can read more about them [here
 
 ## Other
 
-* `cameraFollow` <- Defines which object camera should follow. For example:
+* `cameraFollow` <- Defines which [object](http://mightypancake.games/documentation/topics/objects) camera should follow. For example:
 
 `pancake.cameraFollow = player`
 
-will force the camera to follow the position of `player` object.
+will force the camera to follow the position of `player` [object](http://mightypancake.games/documentation/topics/objects).
 
 * `lastdt` <- Value if last time between updates.
 
