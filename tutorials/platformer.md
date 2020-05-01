@@ -17,10 +17,11 @@ To start, download this empty game template for pancake library [here](https://g
 After this, you have to search for the `main.lua` file (it should be in the main folder). Once you've found it, double click it and edit it in an editor of your choice.
 
 Now search for this piece of code:
-
-  function love.load()
+```
+function love.load()
   pancake.init({window = {pixelSize = love.graphics.getHeight()/64}})
-  end
+end
+```
 
 This is the line that https://github.com/pancake-library/pancake-wiki/wiki/pancake.init()#pancakeinitsettings[initiates the library]. Long story short, it sets things up so they can work and loads animation.
 
