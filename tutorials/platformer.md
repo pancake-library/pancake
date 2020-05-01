@@ -18,9 +18,7 @@ After this, you have to search for the `main.lua` file (it should be in the main
 
 Now search for this piece of code:
 
-`function love.load()`
-
-`pancake.init({window = {pixelSize = love.graphics.getHeight()/64}})`
+`function love.load() \n pancake.init({window = {pixelSize = love.graphics.getHeight()/64}})`
 
 `end`
 
