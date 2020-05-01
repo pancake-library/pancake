@@ -18,9 +18,9 @@ After this, you have to search for the `main.lua` file (it should be in the main
 
 Now search for this piece of code:
 
-`function love.load() \n pancake.init({window = {pixelSize = love.graphics.getHeight()/64}})`
-
-`end`
+  function love.load()
+  pancake.init({window = {pixelSize = love.graphics.getHeight()/64}})
+  end
 
 This is the line that https://github.com/pancake-library/pancake-wiki/wiki/pancake.init()#pancakeinitsettings[initiates the library]. Long story short, it sets things up so they can work and loads animation.
 
