@@ -1,29 +1,29 @@
-       # Main articles:
+## Main articles:
 
-       [Home](https://github.com/pancake-library/pancake-wiki/wiki)
+* [Home](https://github.com/pancake-library/pancake-wiki/wiki)
 
-       [Getting Started](https://github.com/pancake-library/pancake/wiki/Getting-Started)
+* [Getting Started](https://github.com/pancake-library/pancake/wiki/Getting-Started)
 
-       # Tutorials:
+# Tutorials:
 
-       [1. Platformer Tutorial](https://github.com/pancake-library/pancake-wiki/wiki/Platformer-Tutorial)
+* [1. Platformer Tutorial](https://github.com/pancake-library/pancake-wiki/wiki/Platformer-Tutorial)
 
-       # Topics:
+## Topics:
 
-       [Settings](https://github.com/pancake-library/pancake-wiki/wiki/Settings)
+* [Settings](https://github.com/pancake-library/pancake-wiki/wiki/Settings)
 
-       [Pancake Attributes](https://github.com/pancake-library/pancake-wiki/wiki/Pancake-Attributes)
+* [Pancake Attributes](https://github.com/pancake-library/pancake-wiki/wiki/Pancake-Attributes)
 
-       [Objects](https://github.com/pancake-library/pancake-wiki/wiki/Objects)
+* [Objects](https://github.com/pancake-library/pancake-wiki/wiki/Objects)
 
-       [Layers](https://github.com/pancake-library/pancake-wiki/wiki/Layers)
+* [Layers](https://github.com/pancake-library/pancake-wiki/wiki/Layers)
 
-       [Animations](https://github.com/pancake-library/pancake-wiki/wiki/Animations)
+* [Animations](https://github.com/pancake-library/pancake-wiki/wiki/Animations)
 
-       # Functions:
+## Functions:
 
-       [pancake.addObject()](https://github.com/pancake-library/pancake-wiki/wiki/pancake.addObject())
+* [pancake.addObject()](https://github.com/pancake-library/pancake-wiki/wiki/pancake.addObject())
 
-       [pancake.getStat()](https://github.com/pancake-library/pancake-wiki/wiki/pancake.getStat())
+* [pancake.getStat()](https://github.com/pancake-library/pancake-wiki/wiki/pancake.getStat())
 
-       [pancake.init()](https://github.com/pancake-library/pancake-wiki/wiki/pancake.init())
+* [pancake.init()](https://github.com/pancake-library/pancake-wiki/wiki/pancake.init())
