@@ -29,9 +29,15 @@ This is the line that https://github.com/pancake-library/pancake-wiki/wiki/panca
 
 To create our player object simply use https://github.com/pancake-library/pancake-wiki/wiki/pancake.addObject()[pancake.addObject()] like this under the
 
-`pancake.init({window = {pixelSize = love.graphics.getHeight()/64}})` line of code:
+```lua
+pancake.init({window = {pixelSize = love.graphics.getHeight()/64}})
+```
 
-`player = pancake.addObject({x = 29, y = 30, width = 6, height = 11, name = "dexter", colliding = true, offsetX = -5, offsetY = -2})`
+line of code:
+
+```lua
+player = pancake.addObject({x = 29, y = 30, width = 6, height = 11, name = "dexter", colliding = true, offsetX = -5, offsetY = -2})
+```
 
 This will create a variable named player and assign an object to it that has different https://github.com/pancake-library/pancake-wiki/wiki/Objects#objects-attributes[attributes]. Now, we want to run our game to see the results of our work.
 
@@ -48,25 +54,28 @@ Go https://github.com/pancake-library/platformer-template/tree/master/images[her
 
 Now, let's get back to coding. Under the line, you've previously written add these two:
 
-`pancake.addAnimation("dexter", "idle", "images/animations", 100)`
-
-`pancake.addAnimation("dexter", "run", "images/animations", 50)`
+```lua
+pancake.addAnimation("dexter", "idle", "images/animations", 100)
+pancake.addAnimation("dexter", "run", "images/animations", 50)
+```
 
 This adds two animations that can be used by any object named `dexter`. You can read more on animations https://github.com/pancake-library/pancake-wiki/wiki/Animations[here].
 
 While we're adding things, let's add images for the ground for boxes that the player will be able to interact with!
 
-`pancake.addImage("ground","images")`
-
-`pancake.addImage("grass","images")`
-
-`pancake.addImage("box","images")`
+```lua
+pancake.addImage("ground","images")
+pancake.addImage("grass","images")
+pancake.addImage("box","images")
+```
 
 This adds images that are going to be used. More on how it works https://github.com/pancake-library/pancake-wiki/wiki/pancake.addImage()[here].
 
 Now, we need to apply the animation we made to the player object and it can be done with this line of code:
 
-`pancake.changeAnimation(player, "idle")`
+```lua
+pancake.changeAnimation(player, "idle")
+```
 
 Now, let's check how the game looks! Once again drag the game folder to your LÖVE engine.
 
@@ -76,49 +85,43 @@ Everything works just fine!... Except, for a platformer game there is quite a sm
 
 Under this part of code:
 
-`function love.load()`
-
-`pancake.init({window = {pixelSize = love.graphics.getHeight()/64}})`
-
-`player = pancake.addObject({x = 29, y = 30, width = 6, height = 11, name = "dexter", colliding = true, offsetX = -5, offsetY = -2})`
-
-`pancake.addAnimation("dexter", "idle", "images/animations", 100)`
-
-`pancake.addAnimation("dexter", "run", "images/animations", 50)`
-
-`pancake.addImage("ground","images")`
-
-`pancake.addImage("grass","images")`
-
-`pancake.addImage("box","images")`
-
-`pancake.changeAnimation(player, "idle")`
-
-`end`
+```lua
+function love.load()
+  pancake.init({window = {pixelSize = love.graphics.getHeight()/64}})
+  player = pancake.addObject({x = 29, y = 30, width = 6, height = 11, name = "dexter", colliding = true, offsetX = -5, offsetY = -2})
+  pancake.addAnimation("dexter", "idle", "images/animations", 100)
+  pancake.addAnimation("dexter", "run", "images/animations", 50)
+  pancake.addImage("ground","images")
+  pancake.addImage("grass","images")
+  pancake.addImage("box","images")
+  pancake.changeAnimation(player, "idle")
+end
+```
 
 We are going to create a function; something that we can create easily platforms with! Let's write this down:
 
-`--Create a function to create a platform!`
-
-`function createPlatform(x,y)`
-
-`for i = 0, 3 do`
-
-`pancake.addObject({x = x + i*8, y = y, image = "ground", colliding = true, width = 8, height = 8})`
-
-`end`
-
-`end`
+```lua
+--Create a function to create a platform!
+function createPlatform(x,y)
+  for i = 0, 3 do
+    pancake.addObject({x = x + i*8, y = y, image = "ground", colliding = true, width = 8, height = 8})
+  end
+end
+```
 
 This is a simple function that makes a platform by creating 4 objects named `ground` and placing them next to one another. Note that this time we stated that `image` attribute of this object should be equal to `ground`. This refers to image that we added in the code (`pancake.addImage("ground", "images")`) Now, let's use it! Go back to the body of love.load() function (the one you spent the most time in) and head to the last line of it, just before the
 
-`end`
+```lua
+end
+```lua
 
 line.
 
 Add this line to make use of `createPlatform()` function:
 
-`createPlatform(16, 56)`
+```lua
+createPlatform(16, 56)
+```
 
 Now, run the game again by dragging its folder to the engine! You should see a platform covered in the grass below the player!
 
@@ -127,8 +130,9 @@ Now, run the game again by dragging its folder to the engine! You should see a p
 Now, you might have noticed that the game is still missing something. That thing is definitely gravity for the player object, so it isn't just hovering above the platform forever. You can, of course, leave him like that, but in my opinion, it's not a very entertaining thing to do. So, let's apply physic to our player instead!
 
 Under the line you've previously written add this piece of code:
-
-`pancake.applyPhysics(player)`
+```lua
+pancake.applyPhysics(player)
+```
 
 Now, if you run the game the player object should fall on the platform!
 
@@ -136,25 +140,22 @@ Now, if you run the game the player object should fall on the platform!
 
 With all of the above set up, we just need to make sure our `player` object can actually be controlled! For this, we need to add buttons:
 
-`pancake.addImage("right", "images")`
-
-`pancake.addImage("right_clicked", "images")`
-
-`right = pancake.addButton({name = "right", x = 18*pancake.window.pixelSize, y = love.graphics.getHeight() - 16*pancake.window.pixelSize, width = 14, height = 14, key = "d", scale = pancake.window.pixelSize})`
+```lua
+  pancake.addImage("right", "images")
+  pancake.addImage("right_clicked", "images")
+  right = pancake.addButton({name = "right", x = 18*pancake.window.pixelSize, y = love.graphics.getHeight() - 16*pancake.window.pixelSize, width = 14, height = 14, key = "d", scale = pancake.window.pixelSize})
+```
 
 This code adds images that should appear when a button named `right` is clicked and when it's not.  Now, let's do the same for other buttons like this:
 
-`pancake.addImage("left", "images")`
-
-`pancake.addImage("left_clicked", "images")`
-
-`left = pancake.addButton({name = "left", x = 2*pancake.window.pixelSize, y = love.graphics.getHeight() - 16*pancake.window.pixelSize, width = 14, height = 14, key = "a", scale = pancake.window.pixelSize})`
-
-`pancake.addImage("jump", "images")`
-
-`pancake.addImage("jump_clicked", "images")`
-
-`jump = pancake.addButton({name = "jump", x = love.graphics.getWidth() - 16*pancake.window.pixelSize, y = love.graphics.getHeight() - 16*pancake.window.pixelSize, width = 14, height = 14, key = "w", scale = pancake.window.pixelSize})`
+```lua
+  pancake.addImage("left", "images")
+  pancake.addImage("left_clicked", "images")
+  left = pancake.addButton({name = "left", x = 2*pancake.window.pixelSize, y = love.graphics.getHeight() - 16*pancake.window.pixelSize, width = 14, height = 14, key = "a", scale = pancake.window.pixelSize})
+  pancake.addImage("jump", "images")
+  pancake.addImage("jump_clicked", "images")
+  jump = pancake.addButton({name = "jump", x = love.graphics.getWidth() - 16*pancake.window.pixelSize, y = love.graphics.getHeight() - 16*pancake.window.pixelSize, width = 14, height = 14, key = "w", scale = pancake.window.pixelSize})
+```
 
 Now, run the game and see what changes. You should see two buttons that can be clicked or just get pressed by hitting `a`, `w` or `d` key on your keyboard!
 
@@ -164,29 +165,29 @@ Although the buttons can be freely pressed they still do nothing. Let's change t
 
 Navigate to the line that contains this piece of code:
 
-`function love.update(dt)`
-
-`pancake.update(dt) --Passing time between frames to pancake!`
-
-`end`
+```lua
+function love.update(dt)
+  pancake.update(dt) --Passing time between frames to pancake!
+end
+```
 
 This is where all time-based things happen in pancake and LÖVE engine in general! the `dt` is a number that tells how many seconds have passed since the last update. For more info head to https://github.com/pancake-library/pancake/wiki/Getting-Started[Getting Started] or https://love2d.org/wiki/love.update[LÖVE's documentation on love.update()].
 
 Under this line
 
-`pancake.update(dt) --Passing time between frames to pancake!`
+```lua
+pancake.update(dt) --Passing time between frames to pancake!
+```
 
 add the following one:
 
-`if pancake.isButtonClicked(right) and pancake.facing(player).down then`
-
-`pancake.applyForce(player, {x = 200, y = 0, relativeToMass = true})`
-
-`pancake.changeAnimation(player, "run")`
-
-`player.flippedX = false`
-
-`end`
+```lua
+if pancake.isButtonClicked(right) and pancake.facing(player).down then
+  pancake.applyForce(player, {x = 200, y = 0, relativeToMass = true})
+  pancake.changeAnimation(player, "run")
+  player.flippedX = false
+end
+```
 
 Now, let's discuss what each line does. First one:
 
