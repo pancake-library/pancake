@@ -6,7 +6,7 @@ The goal of this tutorial is to create a simple platformer game, where the playe
 
 ## Before you start
 
-Make sure you're familiar with [Getting Started](http://mightypancake.games/tutorials/Getting_Started)  article, so you know the basics.
+Make sure you're familiar with [Getting Started](http://mightypancake.games/#/tutorials/Getting_Started?id=getting-started)  article, so you know the basics.
 
 Also, keep in mind this tutorial is just kept as simple as possible, so it misses various information on different topics. However, whenever something is mentioned here you can always (and it's very advised to) click the link discussing the topic/function. Also, if you get lost, you can always visit the [platformer template](https://github.com/pancake-library/platformer-template) to see the goal and notice any mistakes of yours! With that being said, let's jump right into action!
 
@@ -28,7 +28,7 @@ This is the line that https://github.com/pancake-library/pancake-wiki/wiki/panca
 
 ## Creating the player object
 
-To create our player object simply use https://github.com/pancake-library/pancake-wiki/wiki/pancake.addObject()[pancake.addObject()] like this under the 
+To create our player object simply use https://github.com/pancake-library/pancake-wiki/wiki/pancake.addObject()[pancake.addObject()] like this under the
 
 `pancake.init({window = {pixelSize = love.graphics.getHeight()/64}})` line of code:
 
