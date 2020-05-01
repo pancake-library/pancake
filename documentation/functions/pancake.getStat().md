@@ -2,7 +2,7 @@
 
 ## Description
 
-A simple function that returns the given attribute of the given [object](http://mightypancake.games/documentation/topics/objects).
+A simple function that returns the given attribute of the given [object](http://mightypancake.games/#/documentation/topics/objects).
 
 ## Inputs:
 

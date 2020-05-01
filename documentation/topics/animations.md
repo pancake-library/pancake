@@ -2,7 +2,7 @@
 
 ## What is a pancake animation?
 
-Pancake animation is a table that contains important data that is needed to animate an [object](http://mightypancake.games/documentation/topics/objects); change its image every _x_ amount of time. Such animation can then be applied to an object.
+Pancake animation is a table that contains important data that is needed to animate an [object](http://mightypancake.games/#/documentation/topics/objects); change its image every _x_ amount of time. Such animation can then be applied to an object.
 
 # How to create animation?
 
@@ -14,7 +14,7 @@ Where `object_name` is the name of the object this animation will be able to be 
 
 **NOTE:**
 
-Adding animation only declares it, you have to use [pancake.changeAnimation()](http://mightypancake.games/documentation/functions/pancake.changeAnimation()) to apply it to object
+Adding animation only declares it, you have to use [pancake.changeAnimation()](http://mightypancake.games/#/documentation/functions/pancake.changeAnimation()) to apply it to object
 
 # How to use animations?
 

@@ -2,7 +2,7 @@
 
 ## Description
 
-Creates and saves an object with given attributes with other [objects](http://mightypancake.games/documentation/topics/objects).
+Creates and saves an object with given attributes with other [objects](http://mightypancake.games/#/documentation/topics/objects).
 
 ## Inputs:
 
@@ -10,7 +10,7 @@ Creates and saves an object with given attributes with other [objects](http://mi
 
 ## Outputs:
 
-[`object`](http://mightypancake.games/documentation/topics/objects) <- Pancake object
+[`object`](http://mightypancake.games/#/documentation/topics/objects) <- Pancake object
 
 ## Example
 

@@ -2,7 +2,7 @@
 
 ## What are the layers?
 
-Layers exist so that the pancake library can see which [object](http://mightypancake.games/documentation/topics/objects) should be displayed before which. Pancake takes all [objects](http://mightypancake.games/documentation/topics/objects) which have the layer set to 1 or just don't have the layer set (which is the same for the library) and draws them. However, if there's an [object](http://mightypancake.games/documentation/topics/objects) with layer set to number bigger then 1 **(whole number)**, it will draw this [object](http://mightypancake.games/documentation/topics/objects) before drawing the rest. Basically, it defines which [objects](http://mightypancake.games/documentation/topics/objects) should be displayed at the top of which. For example, you might wanna set layers to 2 for your background [object](http://mightypancake.games/documentation/topics/objects)!
+Layers exist so that the pancake library can see which [object](http://mightypancake.games/#/documentation/topics/objects) should be displayed before which. Pancake takes all [objects](http://mightypancake.games/#/documentation/topics/objects) which have the layer set to 1 or just don't have the layer set (which is the same for the library) and draws them. However, if there's an [object](http://mightypancake.games/#/documentation/topics/objects) with layer set to number bigger then 1 **(whole number)**, it will draw this [object](http://mightypancake.games/#/documentation/topics/objects) before drawing the rest. Basically, it defines which [objects](http://mightypancake.games/#/documentation/topics/objects) should be displayed at the top of which. For example, you might wanna set layers to 2 for your background [object](http://mightypancake.games/#/documentation/topics/objects)!
 
 # How to change an object's layer?
 
@@ -10,7 +10,7 @@ You just type:
 
 `object.layerDepth = value`
 
-Where `object` is the [object](http://mightypancake.games/documentation/topics/objects) you want to change and `value` is a **whole** number that is bigger than 1.
+Where `object` is the [object](http://mightypancake.games/#/documentation/topics/objects) you want to change and `value` is a **whole** number that is bigger than 1.
 
 # Layer depth
 

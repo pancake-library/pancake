@@ -16,7 +16,7 @@ Collections contain all pancake made things such as:
 
 * `buttons`
 
-* [`objects`](http://mightypancake.games/documentation/topics/objects)
+* [`objects`](http://mightypancake.games/#/documentation/topics/objects)
 
 * `timers`
 
@@ -30,15 +30,15 @@ Timers and objects items of a collection have their unique ID parameters.
 
 ## Settings
 
-Settings are what define how pancake behaves. You can read more about them [here](http://mightypancake.games/documentation/topics/settings).
+Settings are what define how pancake behaves. You can read more about them [here](http://mightypancake.games/#/documentation/topics/settings).
 
 ## Other
 
-* `cameraFollow` <- Defines which [object](http://mightypancake.games/documentation/topics/objects) camera should follow. For example:
+* `cameraFollow` <- Defines which [object](http://mightypancake.games/#/documentation/topics/objects) camera should follow. For example:
 
 `pancake.cameraFollow = player`
 
-will force the camera to follow the position of `player` [object](http://mightypancake.games/documentation/topics/objects).
+will force the camera to follow the position of `player` [object](http://mightypancake.games/#/documentation/topics/objects).
 
 * `lastdt` <- Value if last time between updates.
 
