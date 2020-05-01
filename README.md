@@ -8,11 +8,11 @@ And the name? Well, creating games with it is as easy as making a pancake, but r
 ## Navigation Menu
 * **[How to get started?](http://mightypancake.games/tutorials/Getting_Started)**
 
-* **[Tutorials](http://mightypancake.games/tutorials)**
+* **[Tutorials](http://mightypancake.games/#/tutorials)**
 
-* **[Documentation](http://mightypancake.games/documentation)**
+* **[Documentation](http://mightypancake.games/#/documentation)**
 
-* **[Games made using pancake](http://mightypancake.games/games)**
+* **[Games made using pancake](http://mightypancake.games/#/games)**
 
 ### **Have fun baking your game!**
 ![](https://i.imgur.com/tHYz95W.png) ~Pancake icon by [Unsua Design](https://www.instagram.com/unsuadesign/)
