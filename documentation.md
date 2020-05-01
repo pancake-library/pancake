@@ -4,7 +4,7 @@ Welcome to the documentation of pancake library! This page was created to naviga
 
 * **Topics** - These articles explain various things about pancake. They usually don't have code in them and are a rather theoritcal, then practical.
 
- * **Functions** - These kind of articles are just discussing how pancake functions work and how to use them! This is purely practical knowledge!
+* **Functions** - These kind of articles are just discussing how pancake functions work and how to use them! This is purely practical knowledge!
 
 
 **NOTE:**

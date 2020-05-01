@@ -4,7 +4,7 @@
 
 * [Getting Started](https://github.com/pancake-library/pancake/wiki/Getting-Started)
 
-# Tutorials:
+## Tutorials:
 
 * [1. Platformer Tutorial](https://github.com/pancake-library/pancake-wiki/wiki/Platformer-Tutorial)
 
