@@ -1,4 +1,4 @@
-# :pancakes: Pancake Library by MightyPancake
+# Pancake Library by MightyPancake
 What's pancake? Why such a name? Pancake is a library made by MightyPancake created to make really simple 2D pixel games with ease in no time!
 
 Seriously, it's really as simple as it can be while leaving space for the user. It's great for game jams, but also small-medium projects! It's friendly towards new users; all you have to learn is Lua and some pretty basics of LÖVE engine to get started!
