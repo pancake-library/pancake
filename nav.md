@@ -1,14 +1,14 @@
-  **Main articles:**
+  ## Main articles:
 
   * [Home](https://github.com/pancake-library/pancake-wiki/wiki)
 
   * [Getting Started](https://github.com/pancake-library/pancake/wiki/Getting-Started)
 
-  **Tutorials:**
+  ## Tutorials:
 
   * [1. Platformer Tutorial](https://github.com/pancake-library/pancake-wiki/wiki/Platformer-Tutorial)
 
-  **Topics:**
+  ## Topics:
 
   * [Settings](https://github.com/pancake-library/pancake-wiki/wiki/Settings)
 
@@ -20,7 +20,7 @@
 
   * [Animations](https://github.com/pancake-library/pancake-wiki/wiki/Animations)
 
-  **Functions:**
+  ## Functions:
 
   * [pancake.addObject()](https://github.com/pancake-library/pancake-wiki/wiki/pancake.addObject())
 
