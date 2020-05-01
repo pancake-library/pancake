@@ -6,7 +6,7 @@ Seriously, it's really as simple as it can be while leaving space for the user. 
 And the name? Well, creating games with it is as easy as making a pancake, but rewarding as a delicious cake (hence, such a logo). With that being said, you can now start your journey!
 
 ## Navigation Menu
-* **[How to get started?](http://mightypancake.games/#/tutorials/Getting_Started?id=getting-started)**
+* **[How to get started?](http://mightypancake.games/#/tutorials/Getting_Started)**
 
 * **[Tutorials](http://mightypancake.games/#/tutorials)**
 

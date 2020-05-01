@@ -1,29 +1,29 @@
 ## Main articles:
 
-* [Home](https://github.com/pancake-library/pancake-wiki/wiki)
+* [Home](http://mightypancake.games)
 
-* [Getting Started](https://github.com/pancake-library/pancake/wiki/Getting-Started)
+* [Getting Started](http://mightypancake.games/#/tutorials/Getting_Started)
 
 ## Tutorials:
 
-* [1. Platformer Tutorial](https://github.com/pancake-library/pancake-wiki/wiki/Platformer-Tutorial)
+* [1. Platformer Tutorial](http://mightypancake.games/#/tutorials/platformer)
 
 ## Topics:
 
-* [Settings](https://github.com/pancake-library/pancake-wiki/wiki/Settings)
+* [Settings](http://mightypancake.games/#/documentation/topics/settings)
 
-* [Pancake Attributes](https://github.com/pancake-library/pancake-wiki/wiki/Pancake-Attributes)
+* [Pancake Attributes](http://mightypancake.games/#/documentation/topics/pancake_attributes)
 
-* [Objects](https://github.com/pancake-library/pancake-wiki/wiki/Objects)
+* [Objects](http://mightypancake.games/#/documentation/topics/objects)
 
-* [Layers](https://github.com/pancake-library/pancake-wiki/wiki/Layers)
+* [Layers](http://mightypancake.games/#/documentation/topics/layers)
 
-* [Animations](https://github.com/pancake-library/pancake-wiki/wiki/Animations)
+* [Animations](http://mightypancake.games/#/documentation/topics/animations)
 
 ## Functions:
 
-* [pancake.addObject()](https://github.com/pancake-library/pancake-wiki/wiki/pancake.addObject())
+* [pancake.addObject()](http://mightypancake.games/#/documentation/functions/pancake.addObject())
 
-* [pancake.getStat()](https://github.com/pancake-library/pancake-wiki/wiki/pancake.getStat())
+* [pancake.getStat()](http://mightypancake.games/#/documentation/functions/pancake.getStat())
 
-* [pancake.init()](https://github.com/pancake-library/pancake-wiki/wiki/pancake.init())
+* [pancake.init()](http://mightypancake.games/#/documentation/functions/pancake.init())

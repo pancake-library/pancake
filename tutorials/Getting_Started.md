@@ -32,4 +32,4 @@ Here are some LÖVE callbacks that you might want to get familiar with:
 
 ## Next steps
 
-Once you are familiar with all of the above, you can **jump** right to the [Platformer Tutorial](http://mightypancake.games/#/tutorials/platformer?id=platformer-tutorial)!
+Once you are familiar with all of the above, you can **jump** right to the [Platformer Tutorial](http://mightypancake.games/#/tutorials/platformer)!
