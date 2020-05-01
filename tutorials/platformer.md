@@ -17,7 +17,7 @@ To start, download this empty game template for pancake library [here](https://g
 After this, you have to search for the `main.lua` file (it should be in the main folder). Once you've found it, double click it and edit it in an editor of your choice.
 
 Now search for this piece of code:
-```
+```Lua
 function love.load()
   pancake.init({window = {pixelSize = love.graphics.getHeight()/64}})
 end
