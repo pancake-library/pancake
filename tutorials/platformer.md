@@ -170,7 +170,7 @@ function love.update(dt)
 end
 ```
 
-This is where all time-based things happen in pancake and LÖVE engine in general! the `dt` is a number that tells how many seconds have passed since the last update. For more info head to [Getting Started](http://mightypancake.games/#/tutorials/Getting_Started) or [LÖVE's documentation on love.update()](https://love2d.org/wiki/love.update).
+This is where all time-based things happen in pancake and LÖVE engine in general! The `dt` is a number that tells how many seconds have passed since the last update. For more info head to [Getting Started](http://mightypancake.games/#/tutorials/Getting_Started) or [LÖVE's documentation on love.update()](https://love2d.org/wiki/love.update).
 
 Under this line
 
