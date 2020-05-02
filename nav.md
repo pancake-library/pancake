@@ -1,5 +1,3 @@
-## Articles
-
 - **Main articles**
   - [Home](http://mightypancake.games)
   - [Getting Started](http://mightypancake.games/#/tutorials/Getting_Started)
