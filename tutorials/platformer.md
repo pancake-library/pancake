@@ -113,7 +113,7 @@ This is a simple function that makes a platform by creating 4 objects named `gro
 
 ```lua
 end
-```lua
+```
 
 line.
 
@@ -130,6 +130,7 @@ Now, run the game again by dragging its folder to the engine! You should see a p
 Now, you might have noticed that the game is still missing something. That thing is definitely gravity for the player object, so it isn't just hovering above the platform forever. You can, of course, leave him like that, but in my opinion, it's not a very entertaining thing to do. So, let's apply physic to our player instead!
 
 Under the line you've previously written add this piece of code:
+
 ```lua
 pancake.applyPhysics(player)
 ```
