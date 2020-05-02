@@ -115,11 +115,6 @@ This is a simple function that makes a platform by creating 4 objects named `gro
 
 Now, let's use it! Go back to the body of love.load() function (the one you spent the most time in) and head to the last line of it, just before the `end` line.
 
-```lua
-end
-```
-line.
-
 Add this line to make use of `createPlatform()` function:
 
 ```lua
