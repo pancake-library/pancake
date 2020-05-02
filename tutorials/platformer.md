@@ -6,7 +6,7 @@ The goal of this tutorial is to create a simple platformer game, where the playe
 
 ## Before you start
 
-Make sure you're familiar with [Getting Started](http://mightypancake.games/#/tutorials/Getting_Started?id=getting-started)  article, so you know the basics.
+Make sure you're familiar with [Getting Started](mightypancake.games/#/tutorials/Getting_Started)  article, so you know the basics.
 
 Also, keep in mind this tutorial is just kept as simple as possible, so it misses various information on different topics. However, whenever something is mentioned here you can always (and it's very advised to) click the link discussing the topic/function. Also, if you get lost, you can always visit the [platformer template](https://github.com/pancake-library/platformer-template) to see the goal and notice any mistakes of yours! With that being said, let's jump right into action!
 
@@ -23,11 +23,11 @@ function love.load()
 end
 ```
 
-This is the line that https://github.com/pancake-library/pancake-wiki/wiki/pancake.init()#pancakeinitsettings[initiates the library]. Long story short, it sets things up so they can work and loads animation.
+This is the line that [initiates the library](mightypancake.games/#/documentation/functions/pancake.init()). Long story short, it sets things up so they can work and loads animation.
 
 ## Creating the player object
 
-To create our player object simply use https://github.com/pancake-library/pancake-wiki/wiki/pancake.addObject()[pancake.addObject()] like this under the
+To create our player object simply use [pancake.addObject()](mightypancake.games/#/documentation/functions/pancake.addObject()) like this under the
 
 ```lua
 pancake.init({window = {pixelSize = love.graphics.getHeight()/64}})
@@ -39,18 +39,18 @@ line of code:
 player = pancake.addObject({x = 29, y = 30, width = 6, height = 11, name = "dexter", colliding = true, offsetX = -5, offsetY = -2})
 ```
 
-This will create a variable named player and assign an object to it that has different https://github.com/pancake-library/pancake-wiki/wiki/Objects#objects-attributes[attributes]. Now, we want to run our game to see the results of our work.
+This will create a variable named player and assign an object to it that has different [attributes](http://mightypancake.games/#/documentation/topics/objects?id=object39s-attributes). Now, we want to run our game to see the results of our work.
 
 ## Running the game
 
-It's really simple. Press and hold the left mouse button on the folder that you store the game files in and drag it to "LÖVE.exe". If you don't have LÖVE yet, please head back to https://github.com/pancake-library/pancake-wiki/wiki/Getting-Started[Getting Started].
+It's really simple. Press and hold the left mouse button on the folder that you store the game files in and drag it to "LÖVE.exe". If you don't have LÖVE yet, please head back to [Getting Started](mightypancake.games/#/tutorials/Getting_Started).
 
 When you do this you should see that the pancake animation plays and nothing else really happens... Why is that? That's because our player object exists somewhere but it's actually invisible right now! Let's make him more alive, shall we?
 
 ## Invisible, yet alive
 
 How do you make an object visible? Well, you give it an image or an animation. In this case, we will create an animation, so he doesn't look like he's dead. To make that, we need some images (frames), so that we can define our animation!
-Go https://github.com/pancake-library/platformer-template/tree/master/images[here] and download assets that are going to be used in this tutorial! After downloading them, copy the `images` folder and swap it with your `images` folder in your game folder!
+Go [here](https://github.com/pancake-library/platformer-template/tree/master/images) and download assets that are going to be used in this tutorial! After downloading them, copy the `images` folder and swap it with your `images` folder in your game folder!
 
 Now, let's get back to coding. Under the line, you've previously written add these two:
 
@@ -59,7 +59,7 @@ pancake.addAnimation("dexter", "idle", "images/animations", 100)
 pancake.addAnimation("dexter", "run", "images/animations", 50)
 ```
 
-This adds two animations that can be used by any object named `dexter`. You can read more on animations https://github.com/pancake-library/pancake-wiki/wiki/Animations[here].
+This adds two animations that can be used by any object named `dexter`. You can read more on animations [here](mightypancake.games/#/documentation/topics/animations).
 
 While we're adding things, let's add images for the ground for boxes that the player will be able to interact with!
 
@@ -69,7 +69,7 @@ pancake.addImage("grass","images")
 pancake.addImage("box","images")
 ```
 
-This adds images that are going to be used. More on how it works https://github.com/pancake-library/pancake-wiki/wiki/pancake.addImage()[here].
+This adds images that are going to be used. More on how it works [here](mightypancake.games/#/documentation/functions/pancake.addImage()).
 
 Now, we need to apply the animation we made to the player object and it can be done with this line of code:
 
@@ -172,7 +172,7 @@ function love.update(dt)
 end
 ```
 
-This is where all time-based things happen in pancake and LÖVE engine in general! the `dt` is a number that tells how many seconds have passed since the last update. For more info head to https://github.com/pancake-library/pancake/wiki/Getting-Started[Getting Started] or https://love2d.org/wiki/love.update[LÖVE's documentation on love.update()].
+This is where all time-based things happen in pancake and LÖVE engine in general! the `dt` is a number that tells how many seconds have passed since the last update. For more info head to [Getting Started](mightypancake.games/#/tutorials/Getting_Started) or [LÖVE's documentation on love.update()](https://love2d.org/wiki/love.update).
 
 Under this line
 
@@ -274,16 +274,14 @@ The last thing we have to add is jumping, so let's do that! Add this code:
 
 This will make it so that when `jump` button is pressed a horizontal force of 70 (and also relative to mass) will be applied to `player` object.
 
-*NOTE:*
-
-This time we used 1 as the last parameter for `pancake.applyForce()` function. That is because by default all forces applied to an object are multiplied by the time this force is being applied, which by default is `dt`. This worked fine when we want to move because the same amount of time the button is pressed the object moves. However, this time the jump should always be the same height! That's why instead of leaving the last parameter blank, we set it to 1.
+!>*NOTE:*This time we used 1 as the last parameter for `pancake.applyForce()` function. That is because by default all forces applied to an object are multiplied by the time this force is being applied, which by default is `dt`. This worked fine when we want to move because the same amount of time the button is pressed the object moves. However, this time the jump should always be the same height! That's why instead of leaving the last parameter blank, we set it to 1.
 
 # What now?
 
-Now you've mastered the basics of making a platformer in pancake! There are many, many things you can learn to improve your game, so please, take a look into the documentation https://github.com/pancake-library/pancake-wiki/wiki[here].
+Now you've mastered the basics of making a platformer in pancake! There are many, many things you can learn to improve your game, so please, take a look into the documentation [here](mightypancake.games/#/documentation).
 
-You can add platforms, change jump height, movement speed and even https://github.com/pancake-library/pancake-wiki/wiki/Pancake-Attributes#other[attach the camera to the player]!
+You can add platforms, change jump height, movement speed and even [attach the camera to the player](http://mightypancake.games/#/documentation/topics/objects?id=other-less-important)!
 
-If by any chance you've lost, here's the https://github.com/pancake-library/platformer-template[template] that you should end up with! Have fun baking!
+If by any chance you've lost, here's the [template](https://github.com/pancake-library/platformer-template) that you should end up with! Have fun baking!
 
 -MightyPancake
