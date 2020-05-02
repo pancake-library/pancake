@@ -272,7 +272,7 @@ This will make it so that when `jump` button is pressed a horizontal force of 70
 
 Now you've mastered the basics of making a platformer in pancake! There are many, many things you can learn to improve your game, so please, take a look into the documentation [here](http://mightypancake.games/#/documentation).
 
-You can add platforms, change jump height, movement speed and even [attach the camera to the player](http://mightypancake.games/#/documentation/topics/objects?id=other-less-important)!
+You can add platforms, change jump height, movement speed and even [attach the camera to the player](http://mightypancake.games/#/documentation/topics/pancake_attributes?id=other)!
 
 If by any chance you've lost, here's the [template](https://github.com/pancake-library/platformer-template) that you should end up with! Have fun baking!
 
