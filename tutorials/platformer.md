@@ -23,9 +23,9 @@ function love.load()
 end
 ```
 
-This is the line that [initiates the library](http://mightypancake.games/#/documentation/functions/pancake.init()). Long story short, it sets things up so they can work and loads animation.
+This is the line that [initiates the library](http://mightypancake.games/#/documentation/functions/pancake.init()). Long story short, it sets things up so they can work and loads [animation]((http://mightypancake.games/#/documentation/topics/animations).
 
-## Creating the player object
+## Creating the player [object]((http://mightypancake.games/#/documentation/topics/objects)
 
 To create our player [object]((http://mightypancake.games/#/documentation/topics/objects) simply use [pancake.addObject()](http://mightypancake.games/#/documentation/functions/pancake.addObject()) like this under the
 
@@ -45,11 +45,11 @@ This will create a variable named player and assign an [object]((http://mightypa
 
 It's really simple. Press and hold the left mouse button on the folder that you store the game files in and drag it to "LÖVE.exe". If you don't have LÖVE yet, please head back to [Getting Started](http://mightypancake.games/#/tutorials/Getting_Started).
 
-When you do this you should see that the pancake animation plays and nothing else really happens... Why is that? That's because our player [object]((http://mightypancake.games/#/documentation/topics/objects) exists somewhere but it's actually invisible right now! Let's make him more alive, shall we?
+When you do this you should see that the pancake [animation]((http://mightypancake.games/#/documentation/topics/animations) plays and nothing else really happens... Why is that? That's because our player [object]((http://mightypancake.games/#/documentation/topics/objects) exists somewhere but it's actually invisible right now! Let's make him more alive, shall we?
 
 ## Invisible, yet alive
 
-How do you make an [object]((http://mightypancake.games/#/documentation/topics/objects) visible? Well, you give it an image or an animation. In this case, we will create an animation, so he doesn't look like he's dead. To make that, we need some images (frames), so that we can define our animation!
+How do you make an [object]((http://mightypancake.games/#/documentation/topics/objects) visible? Well, you give it an image or an [animation]((http://mightypancake.games/#/documentation/topics/animations). In this case, we will create an [animation]((http://mightypancake.games/#/documentation/topics/animations), so he doesn't look like he's dead. To make that, we need some images (frames), so that we can define our [animation]((http://mightypancake.games/#/documentation/topics/animations)!
 Go [here](https://github.com/pancake-library/platformer-template/tree/master/images) and download assets that are going to be used in this tutorial! After downloading them, copy the `images` folder and swap it with your `images` folder in your game folder!
 
 Now, let's get back to coding. Under the line, you've previously written add these two:
@@ -59,7 +59,7 @@ pancake.addAnimation("dexter", "idle", "images/animations", 100)
 pancake.addAnimation("dexter", "run", "images/animations", 50)
 ```
 
-This adds two animations that can be used by any [object]((http://mightypancake.games/#/documentation/topics/objects) named `dexter`. You can read more on animations [here](http://mightypancake.games/#/documentation/topics/animations).
+This adds two [animation]((http://mightypancake.games/#/documentation/topics/animations)s that can be used by any [object]((http://mightypancake.games/#/documentation/topics/objects) named `dexter`. You can read more on [animation]((http://mightypancake.games/#/documentation/topics/animations)s [here](http://mightypancake.games/#/documentation/topics/animations).
 
 While we're adding things, let's add images for the ground for boxes that the player will be able to interact with!
 
@@ -71,7 +71,7 @@ pancake.addImage("box","images")
 
 This adds images that are going to be used. More on how it works [here](http://mightypancake.games/#/documentation/functions/pancake.addImage()).
 
-Now, we need to apply the animation we made to the player [object]((http://mightypancake.games/#/documentation/topics/objects) and it can be done with this line of code:
+Now, we need to apply the [animation]((http://mightypancake.games/#/documentation/topics/animations) we made to the player [object]((http://mightypancake.games/#/documentation/topics/objects) and it can be done with this line of code:
 
 ```lua
 pancake.changeAnimation(player, "idle")
@@ -125,7 +125,7 @@ Now, run the game again by dragging its folder to the engine! You should see a p
 
 ## Is this space?
 
-Now, you might have noticed that the game is still missing something. That thing is definitely gravity for the player object, so it isn't just hovering above the platform forever. You can, of course, leave him like that, but in my opinion, it's not a very entertaining thing to do. So, let's apply physic to our player instead!
+Now, you might have noticed that the game is still missing something. That thing is definitely gravity for the player [object]((http://mightypancake.games/#/documentation/topics/objects), so it isn't just hovering above the platform forever. You can, of course, leave him like that, but in my opinion, it's not a very entertaining thing to do. So, let's apply physic to our player instead!
 
 Under the line you've previously written add this piece of code:
 
@@ -202,7 +202,7 @@ The second line:
 pancake.applyForce(player, {x = 200, y = 0, relativeToMass = true})
 ```
 
-makes sure that if conditions above are met, pancake should apply a force to `player` [object]((http://mightypancake.games/#/documentation/topics/objects) that is only vertical and relative to the object's mass. This will move the `player` object.
+makes sure that if conditions above are met, pancake should apply a force to `player` [object]((http://mightypancake.games/#/documentation/topics/objects) that is only vertical and relative to the [object]((http://mightypancake.games/#/documentation/topics/objects)'s mass. This will move the `player` [object]((http://mightypancake.games/#/documentation/topics/objects).
 
 The third one:
 
@@ -210,7 +210,7 @@ The third one:
 pancake.changeAnimation(player, "run")
 ```
 
-changes the animation of `player` [object]((http://mightypancake.games/#/documentation/topics/objects) to "run". Pretty simple.
+changes the [animation]((http://mightypancake.games/#/documentation/topics/animations) of `player` [object]((http://mightypancake.games/#/documentation/topics/objects) to "run". Pretty simple.
 
 The next one:
 
@@ -230,7 +230,7 @@ if pancake.isButtonClicked(left) and pancake.facing(player).down then
 end
 ```
 
-Finally, we want to make sure that when the player isn't moving the animation changes back! Let's add this piece of code below:
+Finally, we want to make sure that when the player isn't moving the [animation]((http://mightypancake.games/#/documentation/topics/animations) changes back! Let's add this piece of code below:
 
 ```lua
 if not pancake.isButtonClicked(right) and not pancake.isButtonClicked(left) then
@@ -248,7 +248,7 @@ if not pancake.isButtonClicked(right) and not pancake.isButtonClicked(left) then
 end
 ```
 
-This code makes sure that the `player` [object]((http://mightypancake.games/#/documentation/topics/objects) won't look weird. If none of the movement keys are held and the player isn't moving, he'll go back to his `idle` animation. If he is moving though, he will be standing still (which looks like he is stopping). Finally, if he is just not touching anything that is below him, the player will be having it's frame number 3 from `run` animation (which looks like he's jumping).
+This code makes sure that the `player` [object]((http://mightypancake.games/#/documentation/topics/objects) won't look weird. If none of the movement keys are held and the player isn't moving, he'll go back to his `idle` [animation]((http://mightypancake.games/#/documentation/topics/animations). If he is moving though, he will be standing still (which looks like he is stopping). Finally, if he is just not touching anything that is below him, the player will be having it's frame number 3 from `run` [animation]((http://mightypancake.games/#/documentation/topics/animations) (which looks like he's jumping).
 
 Run the game and observe what happens when you press the movement buttons!
 
@@ -264,7 +264,7 @@ if pancake.isButtonClicked(jump) and pancake.facing(player).down then
 end
 ```
 
-This will make it so that when `jump` button is pressed a horizontal force of 70 (and also relative to mass) will be applied to `player` object.
+This will make it so that when `jump` button is pressed a horizontal force of 70 (and also relative to mass) will be applied to `player` [object]((http://mightypancake.games/#/documentation/topics/objects).
 
 !>**NOTE:** This time we used 1 as the last parameter for `pancake.applyForce()` function. That is because by default all forces applied to an [object]((http://mightypancake.games/#/documentation/topics/objects) are multiplied by the time this force is being applied, which by default is `dt`. This worked fine when we want to move because the same amount of time the button is pressed the [object]((http://mightypancake.games/#/documentation/topics/objects) moves. However, this time the jump should always be the same height! That's why instead of leaving the last parameter blank, we set it to 1.
 

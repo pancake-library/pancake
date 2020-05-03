@@ -26,7 +26,7 @@ Collections contain all pancake made things such as:
 
 **NOTE:**
 
-Timers and objects items of a collection have their unique ID parameters.
+Timers and [objects]((http://mightypancake.games/#/documentation/topics/objects) items of a collection have their unique ID parameters.
 
 ## Settings
 
@@ -42,7 +42,7 @@ will force the camera to follow the position of `player` [object](http://mightyp
 
 * `lastdt` <- Value if last time between updates.
 
-* `target` <- Indicates object that should be inspected when `debugMode` is `true`.
+* `target` <- Indicates [object]((http://mightypancake.games/#/documentation/topics/objects) that should be inspected when `debugMode` is `true`.
 
 ## Use
 
