@@ -1,5 +1,7 @@
 # Callbacks
 
+## What are callbacks?
+
 A callback is a function that will run when something else happens. For example, if you create a function named love.draw() it will run every time your game tries to update the display, so it will run every frame.
 
 ## Pancake Callbacks
