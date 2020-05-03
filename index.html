@@ -41,6 +41,11 @@
       logo: '/logo.svg',
       externalLinkTarget: '_self',
       coverpage: true,
+      copyCode: {
+        buttonText : 'Copy code',
+        errorText  : 'Error :(',
+        successText: 'Copied!'
+      }
       themeable: {
           readyTransition : true, // default
           responsiveTables: true  // default
@@ -49,6 +54,6 @@
   </script>
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-lua.js"></script>
-  <script src="//unpkg.com/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
+  <script src="https://unpkg.com/docsify-copy-code@2.1.0/dist/docsify-copy-code.min.js"></script>
 </body>
 </html>
