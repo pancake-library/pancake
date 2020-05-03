@@ -4,15 +4,15 @@
 
 > Make simple 2D games easier then ever before!
 
-- Simple and convenient
+* Simple and convenient
 
-- Imagination is the limit
+* Imagination is the limit
 
-- Many tutorials!
+* Many tutorials!
 
-- For mobiles and computers
+* For mobiles and computers
 
-- Free to export your games
+* Free to export your games
 
 [Download](https://github.com/pancake-library/pancake)
 [Getting Started](http://mightypancake.games/#/tutorials/Getting_Started)
