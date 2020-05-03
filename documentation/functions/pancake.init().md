@@ -9,7 +9,7 @@ Initiates pancake and defines all pancake variables that are needed for the libr
 
 ## Outputs:
 
-**Nothing**
+Nothing.
 
 ## Example
 
