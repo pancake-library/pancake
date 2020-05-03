@@ -34,7 +34,7 @@ Settings are what define how pancake behaves. You can read more about them [here
 
 ## Other
 
-* `cameraFollow` <- Defines which [object](http://mightypancake.games/#/documentation/topics/objects) camera should follow. For example:
+* [`cameraFollow`](- [Pancake Canvas](http://mightypancake.games/#/documentation/topics/pancake.cameraFollow)) <- Defines which [object](http://mightypancake.games/#/documentation/topics/objects) camera should follow. For example:
 
 `pancake.cameraFollow = player`
 

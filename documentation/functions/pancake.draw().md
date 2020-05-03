@@ -2,7 +2,7 @@
 
 ## Description
 
-Draws the pancake screen canvas to the display.
+Draws the [pancake screen canvas](http://mightypancake.games/#/documentation/topics/pancake_canvas) to the display.
 
 ## Inputs:
 
@@ -14,6 +14,9 @@ Nothing.
 
 ## Example
 
-`pancake.getStat(player, "velocityX")`
-
-Gets the value of velocity on `X` axis of the `player` [object]((http://mightypancake.games/#/documentation/topics/objects).
+```lua
+function love.draw()
+  --This the optimal place for pancake.draw()!
+  pancake.draw()
+end
+```
