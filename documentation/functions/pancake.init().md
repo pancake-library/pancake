@@ -13,10 +13,10 @@ Nothing.
 
 ## Example
 
-`function love.load()`
-
-`	pancake.init({window = {pixelSize = love.graphics.getHeight()/64}})`
-
-`end`
+```lua
+function love.load()
+  pancake.init({window = {pixelSize = love.graphics.getHeight()/64}})
+end
+```
 
 Initiates pancake library with the window.pixelSize so the pancake virtual screen/window will fit in height of the game's window.
