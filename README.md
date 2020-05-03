@@ -5,9 +5,9 @@ Pancake is a simple to use library that provides useful functions on tip of your
 ## It's easy
 
 You just have to require it as a lua library:
-
-`pancake = reuqire "pancake"`
-
+```lua
+pancake = require "pancake"
+```
 and it works out of the box!
 
 ## Powerful tool for jams
