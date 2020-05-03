@@ -1,4 +1,4 @@
-![logo](logo.svg)
+![logo](logo2.svg)
 
 # pancake <small>v.1.0.2</small>
 
