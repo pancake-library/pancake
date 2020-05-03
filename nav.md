@@ -4,6 +4,7 @@
 - **Tutorials**
   - [1. Platformer Tutorial](http://mightypancake.games/#/tutorials/platformer)
 - **Topics:**
+  - [Callbacks](http://mightypancake.games/#/documentation/topics/callbacks)
   - [Settings](http://mightypancake.games/#/documentation/topics/settings)
   - [Pancake Attributes](http://mightypancake.games/#/documentation/topics/pancake_attributes)
   - [Objects](http://mightypancake.games/#/documentation/topics/objects)
