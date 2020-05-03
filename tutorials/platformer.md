@@ -276,4 +276,4 @@ You can add platforms, change jump height, movement speed and even [attach the c
 
 If by any chance you've lost, here's the [template](https://github.com/pancake-library/platformer-template) that you should end up with! Have fun baking!
 
--MightyPancake
+-MightyPancake, developer
