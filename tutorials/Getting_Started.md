@@ -2,7 +2,7 @@
 
 First of all, to get you up and running you have to know some basics of Lua and LÖVE engine since pancake uses them. Lua is **really** simple, so I advise getting yourself an app that teaches you Lua or learning it in any other way you want.
 
-!>**NOTE:** Pancake is a library made of LÖVE engine and it *won't* work without it. If you don't have LÖVE engine yet, head to [this site](https://love2d.org/) and download the version that is appropriate to your system!
+!>**NOTE:** Pancake is a library made for LÖVE engine and it *won't* work without it. If you don't have LÖVE engine yet, head to [this site](https://love2d.org/) and download the version that is appropriate to your system!
 
 If this step is already made, you have to get the concept of LÖVE callbacks. I'll briefly discuss what they are, but you can always visit [LÖVE's official tutorial](https://love2d.org/wiki/Tutorial:Callback_Functions).
 
