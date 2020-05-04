@@ -17,4 +17,3 @@
   - [pancake.getStat()](http://mightypancake.games/#/documentation/functions/pancake.getStat())
   - [pancake.init()](http://mightypancake.games/#/documentation/functions/pancake.init())
   - [pancake.draw()](http://mightypancake.games/#/documentation/functions/pancake.draw())
-**Stuff**
