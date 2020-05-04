@@ -34,13 +34,9 @@ Settings are what define how pancake behaves. You can read more about them [here
 
 ## Other
 
-* [`cameraFollow`](- [Pancake Canvas](http://mightypancake.games/#/documentation/topics/pancake.cameraFollow)) <- Defines which [object](http://mightypancake.games/#/documentation/topics/objects) camera should follow. For example:
+* [`cameraFollow`](http://mightypancake.games/#/documentation/topics/pancake.cameraFollow) <- Defines which [object](http://mightypancake.games/#/documentation/topics/objects) camera should follow.
 
-`pancake.cameraFollow = player`
-
-will force the camera to follow the position of `player` [object](http://mightypancake.games/#/documentation/topics/objects).
-
-* `lastdt` <- Value if last time between updates.
+* `lastdt` <- Time (in seconds) between last two frames. Usually a small number.
 
 * `target` <- Indicates [object]((http://mightypancake.games/#/documentation/topics/objects) that should be inspected when `debugMode` is `true`.
 

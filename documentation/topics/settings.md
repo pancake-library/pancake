@@ -24,22 +24,7 @@ They are a set of parameters that define how pancake should behave. This article
 
 ## Window settings
 
-The window parameter is a table containing information on how to display things. These informations are as follows
-
-* `x` (0) <- Defines horizontal coordinate of the window.
-
-* `y` (0) <- Defines vertical coordinate of the window.
-
-* `width` (64) <- Defines how many wide the pancake display should be. It's measured in pixels.
-
-* `height` (width) <- Defines how high the pancake display should be. It's also measured in pixels.
-
-* `pixelSize` (5) <- Defines how many real pixels in width and height should pancake pixel have. For example when it had it's default value 5,every pancake display pixel will be a 5×5 square.
-
-* `offsetX` (0) <- Defines how many pancake pixels should screen be moved towards left/right.
-
-* `offsetY` (0) <- Defines how many pancake pixels should screen be moved towards up/down.
-
+The window parameter is a table containing information on how to display things. You can read about them [here](http://mightypancake.games/#/documentation/topics/pancake_canvas?id=attributes)!
 ## Physics settings
 
 Physics parameters determine how physic in your game will work.
