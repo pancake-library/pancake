@@ -4,14 +4,14 @@
 
 A simple function that returns the given attribute of the given [object](http://mightypancake.games/#/documentation/topics/objects).
 
-## Inputs:
+## Inputs
 
-* `object` <- Which [object]((http://mightypancake.games/#/documentation/topics/objects)'s attribute should be used.
+* [`object`](http://mightypancake.games/#/documentation/topics/objects) <- Which [object](http://mightypancake.games/#/documentation/topics/objects)'s attribute should be used.
 * `attribute` <- What attribute should be returned.
 
-## Outputs:
+## Outputs
 
-* `atribute_value` <- What is the value of given attribute
+* `atribute_value` <- What is the value of given attribute.
 
 ## Example
 
@@ -19,4 +19,4 @@ A simple function that returns the given attribute of the given [object](http://
 pancake.getStat(player, "velocityX")
 ```
 
-Gets the value of velocity on `X` axis of the `player` [object]((http://mightypancake.games/#/documentation/topics/objects).
+Gets the value of velocity on `X` axis of the `player` [object](http://mightypancake.games/#/documentation/topics/objects).

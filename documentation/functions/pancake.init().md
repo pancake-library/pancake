@@ -4,10 +4,10 @@
 
 Initiates pancake and defines all pancake variables that are needed for the library to work properly. It also starts an animation that plays on start.
 
-## Inputs:
+## Inputs
 * `settings` <- Table containing all settings of pancake such as window settings, background, physic values and such. You can read more about what to include here in [settings](http://mightypancake.games/#/documentation/topics/settings) article in the documentation.
 
-## Outputs:
+## Outputs
 
 Nothing.
 
