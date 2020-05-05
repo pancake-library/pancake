@@ -8,7 +8,9 @@ Pancake animation is a table that contains important data that is needed to anim
 
 You create animation by typing:
 
-`pancake.addAnimation(object_name, animation_name, folder, speed)`
+```lua
+pancake.addAnimation(object_name, animation_name, folder, speed)
+```
 
 Where `object_name` is the name of the [object]((http://mightypancake.games/#/documentation/topics/objects) this animation will be able to be applied to `animation_name` is the name of action this animation represents (for example running, idle, etc.), `folder` is the path where the animation is and `speed` is the speed of the animation, so how long a frame should last (expressed in milliseconds; the base value being 150).
 
@@ -29,7 +31,7 @@ Where `object` is the [object]((http://mightypancake.games/#/documentation/topic
 
 You can only apply animations to [objects]((http://mightypancake.games/#/documentation/topics/objects) with the same name as the `object_name` parameter was used when creating the animation. For example:
 ```lua
-player_object = pancake.addObject({x = 0, y = 0, width = 1, height = 1, name = "NAME"
+player_object = pancake.addObject({x = 0, y = 0, width = 1, height = 1, name = "NAME"})
 pancake.addAnimation("player", "idle", "images/animations) --Note that last parameter is empty, so it's set to 150
 pancake.changeAnimation(player_object, "idle)
 ```
