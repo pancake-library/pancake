@@ -19,3 +19,4 @@
   - [pancake.draw()](http://mightypancake.games/#/documentation/functions/pancake.draw())
   - [pancake.renderedObjects()](http://mightypancake.games/#/documentation/functions/pancake.renderedObjects())
   - [pancake.changeAnimation()](http://mightypancake.games/#/documentation/functions/pancake.changeAnimation())
+  - [pancake.addAnimation()](http://mightypancake.games/#/documentation/functions/pancake.addAnimation())
