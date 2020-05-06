@@ -4,7 +4,7 @@
 
 Pancake object is part of data that you give to pancake so it can simulate things about this object. For example, you can create an object named player and give it animation/static image, apply physics to it, define if it should collide, etc.
 
-# Object's attributes
+## Object's attributes
 ### Here are the values that **every pancake object should have:**
 * `x` <- Horizontal coordinate of the object. Combined with `y`, it defines the position of the object. This defines where the left edge of an object should be.
 
@@ -33,6 +33,6 @@ Pancake object is part of data that you give to pancake so it can simulate thing
 
 It's advised to use [pancake.getStat()](http://mightypancake.games/#/documentation/functions/pancake.getStat()) to get a parameter that is related to physics such as friction, velocity, acceleration, mass or direction!
 
-# How to add an object?
+## How to add an object?
 
 Using [pancake.addObject()](http://mightypancake.games/documentation/functions/pancake.addObject()).

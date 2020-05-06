@@ -26,7 +26,7 @@ Collections contain all pancake made things such as:
 
 **NOTE:**
 
-Timers and [objects]((http://mightypancake.games/#/documentation/topics/objects) items of a collection have their unique ID parameters.
+Timers and [objects](http://mightypancake.games/#/documentation/topics/objects) items of a collection have their unique ID parameters.
 
 ## Settings
 
@@ -34,11 +34,11 @@ Settings are what define how pancake behaves. You can read more about them [here
 
 ## Other
 
-* [`cameraFollow`](http://mightypancake.games/#/documentation/topics/pancake.cameraFollow) <- Defines which [object](http://mightypancake.games/#/documentation/topics/objects) camera should follow.
+* [`cameraFollow`](http://mightypancake.games/#/documentation/topics/camera_follow) <- Defines which [object](http://mightypancake.games/#/documentation/topics/objects) camera should follow.
 
 * `lastdt` <- Time (in seconds) between last two frames. Usually a small number.
 
-* `target` <- Indicates [object]((http://mightypancake.games/#/documentation/topics/objects) that should be inspected when `debugMode` is `true`.
+* `target` <- Indicates [object](http://mightypancake.games/#/documentation/topics/objects) that should be inspected when `debugMode` is `true`.
 
 ## Use
 

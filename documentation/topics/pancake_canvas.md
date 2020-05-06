@@ -18,7 +18,7 @@ All parameters for pancake canvas are inside `pancake.window`. They're part of [
 
 !> **NOTE:** All these attributes should be in a table called `window`!
 
-?> **TIP:** You can adjust your camera manually using `offsetX` and `offsetY`. For example, settings `offsetX` to `-1` will make the camera move one pancake pixel to the left. You can also use [pancake.cameraFollow](http://mightypancake.games/#/documentation/topics/pancake.cameraFollow) for easier camera movement!
+?> **TIP:** You can adjust your camera manually using `offsetX` and `offsetY`. For example, settings `offsetX` to `-1` will make the camera move one pancake pixel to the left. You can also use [pancake.cameraFollow](http://mightypancake.games/#/documentation/topics/camera_follow) for easier camera movement!
 
 ## Example
 

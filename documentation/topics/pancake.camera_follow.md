@@ -1,4 +1,4 @@
-# pancake.cameraFollow
+# Camera Follow
 
 ## What is pancake.cameraFollow?
 
