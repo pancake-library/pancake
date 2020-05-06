@@ -20,3 +20,5 @@
   - [pancake.renderedObjects()](http://mightypancake.games/#/documentation/functions/pancake.renderedObjects())
   - [pancake.changeAnimation()](http://mightypancake.games/#/documentation/functions/pancake.changeAnimation())
   - [pancake.addAnimation()](http://mightypancake.games/#/documentation/functions/pancake.addAnimation())
+  - [pancake.getFacingObjects()](http://mightypancake.games/#/documentation/functions/pancake.getFacingObjects())
+  - [pancake.facing()](http://mightypancake.games/#/documentation/functions/pancake.facing())

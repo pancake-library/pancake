@@ -10,7 +10,7 @@ Once you've downloaded the engine just install it. It usually means that you jus
 
 # Downloading pancake
 
-To download the library just click [here](https://github.com/pancake-library/empty-template)!
+To download the library just click [here](https://github.com/pancake-library/pancake/archive/master.zip)!
 
 ## Next steps
 

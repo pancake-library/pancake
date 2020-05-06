@@ -8,5 +8,5 @@
 * Imagination is the limit
 * Free to export your games
 
-[Download](https://github.com/pancake-library/pancake)
+[Download](https://github.com/pancake-library/pancake/archive/master.zip)
 [Getting Started](http://mightypancake.games/#/tutorials/Getting_Started)
