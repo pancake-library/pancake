@@ -33,6 +33,8 @@ Pancake object is part of data that you give to pancake so it can simulate thing
 
 It's advised to use [pancake.getStat()](http://mightypancake.games/#/documentation/functions/pancake.getStat()) to get a parameter that is related to physics such as friction, velocity, acceleration, mass or direction!
 
+For a table of physic attributes, [click here](http://mightypancake.games/#/documentation/topics/physics?id=attributes)
+
 ## How to add an object?
 
 Using [pancake.addObject()](http://mightypancake.games/documentation/functions/pancake.addObject()).

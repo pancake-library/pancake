@@ -23,3 +23,4 @@
   - [pancake.addAnimation()](http://mightypancake.games/#/documentation/functions/pancake.addAnimation())
   - [pancake.getFacingObjects()](http://mightypancake.games/#/documentation/functions/pancake.getFacingObjects())
   - [pancake.facing()](http://mightypancake.games/#/documentation/functions/pancake.facing())
+  - [pancake.applyPhysics()](http://mightypancake.games/#/documentation/functions/pancake.facing())
