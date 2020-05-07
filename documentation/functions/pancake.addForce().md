@@ -6,7 +6,7 @@ This function adds a [force](http://mightypancake.games/#/documentation/topics/f
 
 ## Inputs
 
-* [`object`](http://mightypancake.games/#/documentation/topics/objects) <- Which [object](http://mightypancake.games/#/documentation/topics/objects) should have a force applied to it.
+* [`object`](http://mightypancake.games/#/documentation/topics/objects) <- Which [object](http://mightypancake.games/#/documentation/topics/objects) should have a force added to it.
 
 * [`force`](http://mightypancake.games/#/documentation/topics/forces) <- What force should be applied? **This should be a valid force.** You can [read more about forces here](http://mightypancake.games/#/documentation/topics/forces).
 

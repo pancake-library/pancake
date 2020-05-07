@@ -26,3 +26,4 @@
   - [pancake.facing()](http://mightypancake.games/#/documentation/functions/pancake.facing())
   - [pancake.applyPhysics()](http://mightypancake.games/#/documentation/functions/pancake.applyPhysics())
   - [pancake.addForce()](http://mightypancake.games/#/documentation/functions/pancake.addForce())
+  - [pancake.applyForce()](http://mightypancake.games/#/documentation/functions/pancake.addForce())
