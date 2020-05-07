@@ -13,6 +13,7 @@
   - [Pancake Canvas](http://mightypancake.games/#/documentation/topics/pancake_canvas)
   - [Camera Follow](http://mightypancake.games/#/documentation/topics/camera_follow)
   - [Forces](http://mightypancake.games/#/documentation/topics/forces)
+  - [Physics](http://mightypancake.games/#/documentation/topics/physics)
 **Functions**
   - [pancake.addObject()](http://mightypancake.games/#/documentation/functions/pancake.addObject())
   - [pancake.getStat()](http://mightypancake.games/#/documentation/functions/pancake.getStat())
