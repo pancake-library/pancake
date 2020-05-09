@@ -11,9 +11,9 @@ This function returns how many pixels of each side of [object](http://mightypanc
 ## Outputs
 - `directions` <- Table containg surface contact for each side of the [object](http://mightypancake.games/#/documentation/topics/objects).
   * `left` <- Surface contact for left edge. This is the number of pancake pixels!
-  * `right` <- Surface contact for left edge. This is the number of pancake pixels!
-  * `up` <- Surface contact for left edge. This is the number of pancake pixels!
-  * `down` <- Surface contact for left edge. This is the number of pancake pixels!
+  * `right` <- Surface contact for right edge. This is the number of pancake pixels!
+  * `up` <- Surface contact for up edge. This is the number of pancake pixels!
+  * `down` <- Surface contact for down edge. This is the number of pancake pixels!
 
 ## Example
 
