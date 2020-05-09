@@ -32,3 +32,13 @@ To mute all sounds added to pancake use [`pancake.muteSounds()`](http://mightypa
 pancake.muteSounds(true)
 ```
 For more information read [this article](http://mightypancake.games/#/documentation/functions/pancake.muteSounds())!
+
+## What sound includes and how to find them?
+
+All [sounds](http://mightypancake.games/#/documentation/topics/sounds) added that way are stored in `pancake.sounds[sound_name]`, where `sound_name` is the name that was called when adding it, thus, filename **without** `.wav` extension.
+
+Every sound is a table containing:
+- `name` <- Name of the sound.
+- `sound` <- Sound itself.
+
+These values can be edited however you want!
