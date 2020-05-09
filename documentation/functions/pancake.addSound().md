@@ -24,4 +24,4 @@ pancake.addSound("clap", "sounds")
 pancake.playSound("clap")
 ```
 
-The example above will add a [sound](http://mightypancake.games/#/documentation/topics/sounds) name "clap" from "sounds" folder of the main game directory and then play it once.
+The example above will add a [sound](http://mightypancake.games/#/documentation/topics/sounds) named "clap" from "sounds" folder of the main game directory and then play it once.
