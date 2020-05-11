@@ -14,7 +14,7 @@ Most attributes fall to categories which are listed below.
 
 Collections contain all pancake made things such as:
 
-* `buttons`
+* [`buttons`](http://mightypancake.games/#/documentation/topics/buttons)
 
 * [`objects`](http://mightypancake.games/#/documentation/topics/objects)
 
@@ -22,7 +22,7 @@ Collections contain all pancake made things such as:
 
 * `images`
 
-* `sounds`
+* [`sounds`](http://mightypancake.games/#/documentation/topics/sounds)
 
 **NOTE:**
 
