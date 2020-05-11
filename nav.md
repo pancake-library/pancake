@@ -15,6 +15,7 @@
   - [Forces](http://mightypancake.games/#/documentation/topics/forces)
   - [Physics](http://mightypancake.games/#/documentation/topics/physics)
   - [Sounds](http://mightypancake.games/#/documentation/topics/sounds)
+  - [Buttons](http://mightypancake.games/#/documentation/topics/buttons)
 **Functions**
   - [pancake.addObject()](http://mightypancake.games/#/documentation/functions/pancake.addObject())
   - [pancake.getStat()](http://mightypancake.games/#/documentation/functions/pancake.getStat())
@@ -37,3 +38,5 @@
   - [pancake.addSound()](http://mightypancake.games/#/documentation/functions/pancake.addSound())
   - [pancake.playSound()](http://mightypancake.games/#/documentation/functions/pancake.playSound())
   - [pancake.muteSounds()](http://mightypancake.games/#/documentation/functions/pancake.playSound())
+  - [pancake.addButtons()](http://mightypancake.games/#/documentation/functions/pancake.addButton())
+  - [pancake.isButtonClicked()](http://mightypancake.games/#/documentation/functions/pancake.isButtonClicked())

@@ -23,38 +23,13 @@ Buttons have their attributes that help you decide how they look, where they are
 You add a button by using [`pancake.addButton()`](http://mightypancake.games/#/documentation/functions/pancake.addButton())
 
 ```lua
-pancake.addSound({name = "left_button", height = 8, width = 8, func = leftPressed, key = "d"})
+pancake.addSound({name = "left_button", height = 8, width = 8, func = leftPressed, key = "a"})
 ```
 
-The command above will create a button with
+The command above will create a button with `name`, `height`, `width`, `func` and `key`.
 
-For more information read [this article](http://mightypancake.games/#/documentation/functions/pancake.addSound())!
+For more information read [this article](http://mightypancake.games/#/documentation/functions/pancake.addButton())!
 
-## How to play sounds?
+## How to check if a button is pressed?
 
-You play previously added sounds using [`pancake.playSound()`](http://mightypancake.games/#/documentation/functions/pancake.playSound()):
-
- ```lua
-pancake.playSound("clap")
-```
-
-For more information read [this article](http://mightypancake.games/#/documentation/functions/pancake.playSound())!
-
-## How to mute sounds?
-
-To mute all sounds added to pancake use [`pancake.muteSounds()`](http://mightypancake.games/#/documentation/functions/pancake.muteSounds())
-
-```lua
-pancake.muteSounds(true)
-```
-For more information read [this article](http://mightypancake.games/#/documentation/functions/pancake.muteSounds())!
-
-## What sound includes and how to find them?
-
-All [sounds](http://mightypancake.games/#/documentation/topics/sounds) added that way are stored in `pancake.sounds[sound_name]`, where `sound_name` is the name that was called when adding it, thus, filename **without** `.wav` extension.
-
-Every sound is a table containing:
-- `name` <- Name of the sound.
-- `sound` <- Sound itself.
-
-These values can be edited however you want!
+You can check whether a button is pressed using [`pancake.isButtonClicked()`](http://mightypancake.games/#/documentation/functions/pancake.addButton()).
