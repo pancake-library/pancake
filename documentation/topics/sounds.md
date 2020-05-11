@@ -6,7 +6,7 @@ It's a sound that can be added, played or muted with ease!
 
 ## How to add a sound?
 
-You create animation by using [`pancake.addSound()`](http://mightypancake.games/#/documentation/functions/pancake.addSound()):
+You create a sound using [`pancake.addSound()`](http://mightypancake.games/#/documentation/functions/pancake.addSound()):
 
 ```lua
 pancake.addSound("clap", "sounds")
