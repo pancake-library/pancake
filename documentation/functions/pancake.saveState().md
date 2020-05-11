@@ -1,4 +1,4 @@
-# pancake.savestate()
+# pancake.saveState()
 
 ## Description
 
