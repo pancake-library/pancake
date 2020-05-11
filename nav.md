@@ -40,3 +40,8 @@
   - [pancake.muteSounds()](http://mightypancake.games/#/documentation/functions/pancake.playSound())
   - [pancake.addButton()](http://mightypancake.games/#/documentation/functions/pancake.addButton())
   - [pancake.isButtonClicked()](http://mightypancake.games/#/documentation/functions/pancake.isButtonClicked())
+  - [pancake.loadState()](http://mightypancake.games/#/documentation/functions/pancake.loadState())
+  - [pancake.saveState()](http://mightypancake.games/#/documentation/functions/pancake.saveState())
+  - [pancake.load()](http://mightypancake.games/#/documentation/functions/pancake.load())
+  - [pancake.save()](http://mightypancake.games/#/documentation/functions/pancake.save())
+  - [pancake.find()](http://mightypancake.games/#/documentation/functions/pancake.find())
