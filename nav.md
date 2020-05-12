@@ -45,6 +45,7 @@
   - [pancake.load()](http://mightypancake.games/#/documentation/functions/pancake.load())
   - [pancake.save()](http://mightypancake.games/#/documentation/functions/pancake.save())
   - [pancake.find()](http://mightypancake.games/#/documentation/functions/pancake.find())
+  - [pancake.smartDelete()](http://mightypancake.games/#/documentation/functions/pancake.smartDelete())
   - [pancake.trash()](http://mightypancake.games/#/documentation/functions/pancake.trash())
   - [pancake.print()](http://mightypancake.games/#/documentation/functions/pancake.print())
   - [pancake.shakeScreen()](http://mightypancake.games/#/documentation/functions/pancake.shakeScreen())
