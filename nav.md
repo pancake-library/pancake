@@ -48,3 +48,6 @@
   - [pancake.trash()](http://mightypancake.games/#/documentation/functions/pancake.trash())
   - [pancake.print()](http://mightypancake.games/#/documentation/functions/pancake.print())
   - [pancake.shakeScreen()](http://mightypancake.games/#/documentation/functions/pancake.shakeScreen())
+  - [pancake.sigma()](http://mightypancake.games/#/documentation/functions/pancake.sigma())
+  - [pancake.boolConversion()](http://mightypancake.games/#/documentation/functions/pancake.boolConversion())
+
