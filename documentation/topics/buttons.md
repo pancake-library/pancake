@@ -4,6 +4,8 @@
 
 As the name suggest, it's a table that contains all data that pancake needs to create a clickable button! So, a button is just a special table that is added to pancake!
 
+!> **NOTE:** The `x` and `y` coordinates are in the real display, not [pancake canvas](http://mightypancake.games/#/documentation/topics/pancake_canvas)!
+
 ## Button attributes
 
 In order to create a button, our table must have few attributes!
