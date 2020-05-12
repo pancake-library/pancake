@@ -7,8 +7,8 @@ Outputs data based on given statemant.
 ## Inputs
 
 - `statemant` <- This will decide which one of the next two values will be returned.
-- `ifTrue`("true") <- Value that should be returnedif the `statemant` is `true`.
-- `ifFalse`("false") <- Value that should be returnedif the `statemant` is `false`.
+- `ifTrue`("true") <- Value that should be returned if the `statemant` is `true`.
+- `ifFalse`("false") <- Value that should be returned if the `statemant` is `false`.
 
 ## Outputs
 
