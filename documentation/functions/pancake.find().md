@@ -33,4 +33,4 @@ alicia = pancake.find(my_table, "Alicia")
 
 The example above will create a table and then search for Alicia in it!
 
-!> **NOTE:** If the key is equal to "name", you can just ommit it!
+?> **NOTE:** If the key is equal to "name", you can just ommit it!
