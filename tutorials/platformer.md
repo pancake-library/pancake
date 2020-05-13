@@ -202,7 +202,7 @@ The second line:
 pancake.applyForce(player, {x = 200, y = 0, relativeToMass = true})
 ```
 
-makes sure that if conditions above are met, pancake should apply a force to `player` [object](http://mightypancake.games/#/documentation/topics/objects) that is only vertical and relative to the [object](http://mightypancake.games/#/documentation/topics/objects)'s mass. This will move the `player` [object](http://mightypancake.games/#/documentation/topics/objects).
+makes sure that if conditions above are met, pancake should apply a force to `player` [object](http://mightypancake.games/#/documentation/topics/objects) that is only horizontal and relative to the [object](http://mightypancake.games/#/documentation/topics/objects)'s mass. This will move the `player` [object](http://mightypancake.games/#/documentation/topics/objects).
 
 The third one:
 
