@@ -14,7 +14,7 @@ This is a small utility function that makes everything so much easier and save a
 
 ## Outputs
 
-- `found_table` <- This is the first table that macthes your research!
+- `found_table` <- This is the first table that matches your research!
  * `i` <- This is the position of target table in the parent table
 
 ## Example and how it works
@@ -25,7 +25,7 @@ my_table[1] = {name = "Alex", age = 26, hair = "wavy"}
 my_table[2] = {name = "Olaf", age = 32, hair = "no hair"}
 my_table[3] = {name = "Alicia", age = 50, hair = "short"}
 my_table[4] = {name = "Matt", age = 21, hair = "straight"}
---Now we have to seach for Alicia
+--Now we have to search for Alicia
 alicia = pancake.find(my_table, 50, "age")
 --or
 alicia = pancake.find(my_table, "Alicia")
