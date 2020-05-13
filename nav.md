@@ -1,8 +1,10 @@
 **Main articles**
   - [Home](http://mightypancake.games)
   - [Getting Started](http://mightypancake.games/#/tutorials/Getting_Started)
+  
 **Tutorials**
   - [1. Platformer Tutorial](http://mightypancake.games/#/tutorials/platformer)
+  
 **Topics**
   - [Callbacks](http://mightypancake.games/#/documentation/topics/callbacks)
   - [Settings](http://mightypancake.games/#/documentation/topics/settings)
@@ -16,6 +18,7 @@
   - [Physics](http://mightypancake.games/#/documentation/topics/physics)
   - [Sounds](http://mightypancake.games/#/documentation/topics/sounds)
   - [Buttons](http://mightypancake.games/#/documentation/topics/buttons)
+  
 **Functions**
   - [pancake.addObject()](http://mightypancake.games/#/documentation/functions/pancake.addObject())
   - [pancake.getStat()](http://mightypancake.games/#/documentation/functions/pancake.getStat())
@@ -51,4 +54,5 @@
   - [pancake.shakeScreen()](http://mightypancake.games/#/documentation/functions/pancake.shakeScreen())
   - [pancake.sigma()](http://mightypancake.games/#/documentation/functions/pancake.sigma())
   - [pancake.boolConversion()](http://mightypancake.games/#/documentation/functions/pancake.boolConversion())
+  - [pancake.andCheck()](http://mightypancake.games/#/documentation/functions/pancake.andCheck())
 
