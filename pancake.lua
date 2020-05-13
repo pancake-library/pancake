@@ -1,19 +1,19 @@
 local pancake = {	}
-------------------------------------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------------------------------------
-----                                             _                                      _					----							----
-----                                            | |                                    (_)					----					----
-----     __ __    __ _   _ __     ___     ___   | |  __   ___     ___   _ __     __ _   _  _ __     ___				----
+----------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
+----                                  			    _                                 	  _											----
+----                                      	   | |                                   (_)										----
+----   __ __     __ _  _ __     ___     ___   | |  __   ___      ___   _ __     __ _   _   _ __     ___			----
 ----	|  _  \  / _  | |  _  \  / __|  / _  |  | |/ /  / _ \    / _ \ |  _ \   / _  | | | |  _ \   / _ \			----
 ----	| |_) | | (_| | | | | | | (__  | (_| | 	|   <  |  __/   |  __/ | | | | | (_| | | | | | | | |  __/			----
-----	| .__/   \__,_| |_| |_|  \___|  \__,_|  |_|\_\  \___|    \___| |_| |_|  \__, | |_| |_| |_|  \___|			----
-----	| |                                                                     __/  |						----							----
-----	|_|                                                                    |____/						----							----
-----																----																																				----
-----																----																										BY MIGHTYPANCAKE		----
---																----																																					----
--------------------------------------------------------------------------------------------------------------------------------------
---------------------------------------------------------------------------------------------------------------------------------v.1.0
+----	| .__/   \__,_| |_| |_|  \___|  \__,_| |_|\_\  \___|    \___| |_| |_|  \__, | |_| |_| |_|  \___|			----
+----	| |                                                                     __/ |													----
+----	|_|                                                                    |___/													----
+----																																																				----
+----																																										BY MIGHTYPANCAKE		----
+--																																										  	(Filip Król)			----
+----------------------------------------------------------------------------------------------------------------
+-------------------------------------v.1.1.1(added pancake.addAssets()!)----------------------------------------
 --LIBRARIES USED:
 local smallfolk = require "libraries/smallfolk" --smallfolk: https://github.com/gvx/Smallfolk
 
@@ -35,6 +35,7 @@ function pancake.init (settings)
 	--Setting window...
 	local window = settings.window or {}
 	window.pixelSize = window.pixelSize or 5
+	pancake.lastPixelSize = window.pixelSize
 	local pixelSize = window.pixelSize
 	window.width = window.width or 64
 	window.height = window.height or window.width
@@ -63,7 +64,7 @@ function pancake.init (settings)
 	physics.energyLoss = physics.energyLoss or 0
 	pancake.physics = physics
 	--End of physics
-	pancake.onCollision = nil
+	pancake.os = love.system.getOS( )
 	pancake.lastdt = 0.001
 	pancake.smoothRender = settings.smoothRender or false
 	pancake.target = nil
@@ -76,7 +77,7 @@ function pancake.init (settings)
 	pancake.paused = false
 	if pancake.loadAnimation then
 		for i = 1, 6 do
-			pancake.addSound("pancake".. i)
+			pancake.addSound("pancake".. i, "sounds")
 		end
 		pancake.paused = true
 		pancake.addAnimation("pancake", "anim", "images/pancake animation", 200)
@@ -97,11 +98,14 @@ function pancake.init (settings)
 		end
 		animation[35] = pancake.animations.pancake.anim[20]
 	end
+	--local shaderCode = "vec4 effect(vec4 color, Image tex, vec2 texture_coords, vec2 screen_coords){ vec4 texturecolor = Texel(tex, texture_coords); return vec4(1.0,1.0,1.0,0.8)*texturecolor; } vec4 position(mat4 transform_projection, vec4 vertex_position){ return transform_projection*vertex_position; }"
+	--pancake.shader = love.graphics.newShader(shaderCode)
 end
 ----------------------
 --Drawing functions!--
 ----------------------
 function pancake.draw()
+	--love.graphics.setShader(pancake.shader)
 	local scale = pancake.window.pixelSize
 	local window = pancake.window
 	--Drawing pancake canvas! WITH BORDERS!!
@@ -282,6 +286,14 @@ function drawObjects()
 					local offsetX = pancake.boolConversion(object.offsetX, object.offsetX, 0)*pancake.boolConversion(object.flippedX, -1, 1)
 					local offsetY = pancake.boolConversion(object.offsetY, object.offsetY, 0)*pancake.boolConversion(object.flippedY, -1, 1)
 					love.graphics.draw(pancake.images[object.image], x + offsetX + pancake.boolConversion(object.flippedX, object.width, 0), y + offsetY + pancake.boolConversion(object.flippedY, object.height, 0), 0, pancake.boolConversion(object.flippedX, -1, 1),pancake.boolConversion(object.flippedY, -1, 1))
+					if object.textured then
+						local texture = object.texture
+						for px = 0, math.floor(object.width)/texture.width-1 do
+							for py = 0, math.floor(object.height)/texture.height-1 do
+								love.graphics.draw(pancake.images[object.image], x + px*texture.width,  y + py*texture.height)
+							end
+						end
+					end
 				end
 			end
 		end
@@ -447,10 +459,10 @@ function pancake.addForce(object, force) --force is a table of strength; x and y
 	return force
 end
 
-function pancake.addTimer(time, mode, func) --TIME IS IN MS! Mode can be repetetive or single. If single is pick timer will run once and execute func function once, then delete itself. Repetitive basically acts like a timed loop executing func every x seconds
+function pancake.addTimer(time, mode, func, arguments) --TIME IS IN MS! Mode can be repetetive or single. If single is pick timer will run once and execute func function once, then delete itself. Repetitive basically acts like a timed loop executing func every x seconds
 	local time = time or 1000
 	local mode = mode or "single"
-	local timer = pancake.assignID({duration = time, time = 0, mode = mode, func = func})
+	local timer = pancake.assignID({duration = time, time = 0, mode = mode, func = func, arguments = arguments})
 	pancake.timers[#pancake.timers + 1] = timer
 	return timer
 end
@@ -460,6 +472,10 @@ end
 -------------------------
 function pancake.update(dt)
 	--Handle load animation
+	if pancake.window.pixelSize ~= pancake.lastPixelSize then
+		pancake.canvas = love.graphics.newCanvas(pancake.window.width*pancake.window.pixelSize, pancake.window.height*pancake.window.pixelSize)
+	end
+	pancake.lastPixelSize = pancake.window.pixelSize
 	if pancake.loadAnimation then
 		updateLoadAnimation(dt)
 	end
@@ -657,44 +673,44 @@ function pancake.delta(a,b,c)
 	return b*b - (4*a*c)
 end
 
-function pancake.getPressure(object, axisName)
+function pancake.getPressure(object, directionName)
 local force = 0
 	if object.physics then
-		if axisName == "down" then
+		if directionName == "down" then
 			force = pancake.getStat(object, "forceY") + object.velocityY*object.mass/pancake.lastdt
-			local objects = pancake.getFacingObjects(object)[pancake.opposite(axisName)]
+			local objects = pancake.getFacingObjects(object)[pancake.opposite(directionName)]
 			if #objects > 0 then
 				for i = 1,#objects do
-					local press = pancake.getStat(objects[i], "pressure" .. pancake.intoCaps(axisName))
-					force = force + pancake.boolConversion(press >= 0, press, 0)/#objects/#pancake.getFacingObjects(objects[i])[axisName]
+					local press = pancake.getStat(objects[i], "pressure" .. pancake.intoCaps(directionName))
+					force = force + pancake.boolConversion(press >= 0, press, 0)/#objects/#pancake.getFacingObjects(objects[i])[directionName]
 				end
 			end
-		elseif axisName == "up" then
+		elseif directionName == "up" then
 			force = -pancake.getStat(object, "forceY") - object.velocityY*object.mass/pancake.lastdt
-			local objects = pancake.getFacingObjects(object)[pancake.opposite(axisName)]
+			local objects = pancake.getFacingObjects(object)[pancake.opposite(directionName)]
 			if #objects > 0 then
 				for i = 1,#objects do
-					local press = pancake.getStat(objects[i], "pressure" .. pancake.intoCaps(axisName))
-					force = force + pancake.boolConversion(press <= 0, press, 0)/#objects/#pancake.getFacingObjects(objects[i])[axisName]
+					local press = pancake.getStat(objects[i], "pressure" .. pancake.intoCaps(directionName))
+					force = force + pancake.boolConversion(press <= 0, press, 0)/#objects/#pancake.getFacingObjects(objects[i])[directionName]
 				end
 			end
 			--X AXIS
-		elseif axisName == "right" then
+		elseif directionName == "right" then
 			force = pancake.getStat(object, "forceX") + object.velocityX*object.mass/pancake.lastdt
-			local objects = pancake.getFacingObjects(object)[pancake.opposite(axisName)]
+			local objects = pancake.getFacingObjects(object)[pancake.opposite(directionName)]
 			if #objects > 0 then
 				for i = 1,#objects do
-					local press = pancake.getStat(objects[i], "pressure" .. pancake.intoCaps(axisName))
-					force = force + pancake.boolConversion(press >= 0, press, 0)/#objects/#pancake.getFacingObjects(objects[i])[axisName]
+					local press = pancake.getStat(objects[i], "pressure" .. pancake.intoCaps(directionName))
+					force = force + pancake.boolConversion(press >= 0, press, 0)/#objects/#pancake.getFacingObjects(objects[i])[directionName]
 				end
 			end
-		elseif axisName == "left" then
+		elseif directionName == "left" then
 			force = -pancake.getStat(object, "forceX") - object.velocityX*object.mass/pancake.lastdt
-			local objects = pancake.getFacingObjects(object)[pancake.opposite(axisName)]
+			local objects = pancake.getFacingObjects(object)[pancake.opposite(directionName)]
 			if #objects > 0 then
 				for i = 1,#objects do
-					local press = pancake.getStat(objects[i], "pressure" .. pancake.intoCaps(axisName))
-					force = force + pancake.boolConversion(press <= 0, press, 0)/#objects/#pancake.getFacingObjects(objects[i])[axisName]
+					local press = pancake.getStat(objects[i], "pressure" .. pancake.intoCaps(directionName))
+					force = force + pancake.boolConversion(press <= 0, press, 0)/#objects/#pancake.getFacingObjects(objects[i])[directionName]
 				end
 			end
 		end
@@ -702,7 +718,7 @@ local force = 0
 
 
 	force = pancake.boolConversion(force <= 0, 0, force)
-	object["pressure" .. pancake.intoCaps(axisName)] = force
+	object["pressure" .. pancake.intoCaps(directionName)] = force
 	return force
 end
 
@@ -849,14 +865,20 @@ function collide(object1, objects, axis, direction, sc, oa) --sc is a short for 
 	--call custom collision function!
 	for i = 1, #objects do
 		object2 = objects[i]
+		local ret = true
 		if not didTheyCollide(object1, object2) then
 			if pancake.onCollision then
-				pancake.onCollision(object1, object2, axis, direction, sc)
+				ret = pancake.onCollision(object1, object2, axis, direction, sc)
+				if ret == nil then
+					ret = true
+				end
 			end
-			local force2 = pancake.getCollisionForces(object1, object2, axis, direction, sc)[2]
-			collisions[#collisions + 1] = {object = object2, force = force2}
-			forceSum.x = forceSum.x + pancake.getCollisionForces(object1, object2, axis, direction, sc)[1].x
-			forceSum.y = forceSum.y + pancake.getCollisionForces(object1, object2, axis, direction, sc)[1].y
+			if ret then
+				local force2 = pancake.getCollisionForces(object1, object2, axis, direction, sc)[2]
+				collisions[#collisions + 1] = {object = object2, force = force2}
+				forceSum.x = forceSum.x + pancake.getCollisionForces(object1, object2, axis, direction, sc)[1].x
+				forceSum.y = forceSum.y + pancake.getCollisionForces(object1, object2, axis, direction, sc)[1].y
+			end
 			if not object2.collidedWith then
 				object2.collidedWith = {}
 			end
@@ -882,12 +904,12 @@ end
 function pancake.getCollisionForces(object1, object2, axis, direction, sc)
 	local dt = pancake.lastdt
 	local sc = sc or 1
-	local axisName = pancake.getAxisName(axis, direction)
+	local directionName = pancake.getDirectionName(axis, direction)
 	local physics = pancake.physics
 	local bounciness1 = pancake.getStat(object1, "bounciness")
 	local bounciness2 = pancake.getStat(object2, "bounciness")
-	local pressure1 = pancake.getStat(object1, "pressure" .. pancake.intoCaps(axisName))
-	local pressure2 = pancake.getStat(object2, "pressure" .. pancake.intoCaps(pancake.opposite(axisName)))
+	local pressure1 = pancake.getStat(object1, "pressure" .. pancake.intoCaps(directionName))
+	local pressure2 = pancake.getStat(object2, "pressure" .. pancake.intoCaps(pancake.opposite(directionName)))
 	local pressureSum = pressure1 + pressure2
 	local force1 = {x = 0, y = 0}
 	force1[axis] = -direction*pressureSum*(bounciness1-bounciness2 + 1)*(1-physics.energyLoss)/sc
@@ -929,7 +951,6 @@ function pancake.opposite(value)
 end
 
 function updateTimers(dt)
-	local deleteThese = {}
 	local timers = pancake.timers
 	if timers[1] then
 		for i = 1, #timers do
@@ -937,18 +958,13 @@ function updateTimers(dt)
 			timer.time = timer.time + dt*1000
 			if timer.time >= timer.duration then
 				if timer.func then
-					timer.func()
+					timer.func(timer.arguments)
 				end
 				if timer.mode == "single" then
-					deleteThese[#deleteThese + 1] = timer.ID
+					pancake.trash(pancake.timers, timer.ID, "ID")
 				elseif timer.mode == "repetetive" then
 					timer.time = timer.time - timer.duration
 				end
-			end
-		end
-		if deleteThese[1] then
-			for i = 1, #deleteThese do
-				pancake.smartDelete(timers, deleteThese[i], "ID")
 			end
 		end
 	end
@@ -1117,6 +1133,35 @@ local step = 0.00001
 end
 
 ---------------------------------
+--- 			PANCAKE FILES 			---
+---------------------------------
+function pancake.addFolder(path)
+	local type =  love.filesystem.getInfo(path).type
+	if type == "directory" then
+		local items = love.filesystem.getDirectoryItems(path)
+		if #items > 0 then
+			for i = 1, #items do
+				local item = items[i]
+				local itemPath = path .. "/" .. item
+				if love.filesystem.getInfo(itemPath).type == "directory" then
+					pancake.addFolder(itemPath)
+				else
+					local extension = string.sub(item, -3)
+					if extension == "png" then
+						pancake.addImage(string.sub(item,0, -5), path)
+					elseif extension == "wav" then
+						pancake.addSound(string.sub(item,0, -5), path)
+					end
+				end
+			end
+		end
+	end
+end
+
+function pancake.addAssets()
+	pancake.addFolder("")
+end
+
 --- PANCAKE IMAGES/ANIMATIONS ---
 ---------------------------------
 function pancake.addImage(image, folders)
@@ -1142,26 +1187,36 @@ function pancake.addSound (name, subfolder)
 	sounds[#sounds + 1] = {	}
 	sounds[#sounds].name = name
 	if subfolder == nil then
-		sounds[#sounds].sound = love.audio.newSource("sounds/" .. name .. ".wav", "static")
+		sounds[#sounds].sound = love.audio.newSource(name .. ".wav", "static")
 	else
-		sounds[#sounds].sound = love.audio.newSource("sounds/" .. subfolder .. "/".. name .. ".wav", "static")
+		sounds[#sounds].sound = love.audio.newSource(subfolder .. "/".. name .. ".wav", "static")
 	end
 end
 
 function pancake.playSound(name, overlap)
-local overlap = overlap or false
-local sounds = pancake.sounds
-	if type(name) == "string" then
-		local sound = pancake.find(sounds, name, "name")
-		if sound.sound:isPlaying( ) and not overlap then
-			sound.sound:stop()
+if not pancake.soundMuted then
+	local overlap = overlap or false
+	local sounds = pancake.sounds
+		if type(name) == "string" then
+			local sound = pancake.find(sounds, name, "name")
+			if sound.sound:isPlaying( ) and not overlap then
+				sound.sound:stop()
+			end
+				sound.sound:play()
+		else
+			if sounds[name].sound:isPlaying( ) and not overlap then
+				sounds[name].sound:stop()
+			end
+			sounds[name].sound:play()
 		end
-			sound.sound:play()
+	end
+end
+
+function pancake.muteSounds(option)
+	if option then
+		pancake.soundMuted = true
 	else
-		if sounds[name].sound:isPlaying( ) and not overlap then
-			sounds[name].sound:stop()
-		end
-		sounds[name].sound:play()
+		pancake.soundMuted = false
 	end
 end
 
@@ -1176,8 +1231,8 @@ function pancake.addButton (button) --example: {name = imageName, x = 0, y = 0, 
 	button.offsetY = button.offsetY or 0
 	button.image = button.image or pancake.images[button.name]
 	button.imageClicked = button.imageClicked or pancake.images[button.name .. "_clicked"]
-	button.width = button.width or button.image:getWidth()*button.scale
-	button.height = button.height or button.image:getHeight()*button.scale
+	button.width = button.width or button.image:getWidth()
+	button.height = button.height or button.image:getHeight()
 	button.key = button.key or "b"
 	pancake.buttons[#pancake.buttons + 1] = button
 	return pancake.buttons[#pancake.buttons]
@@ -1194,13 +1249,25 @@ end
 
 function pancake.isButtonClicked(button)
 	local ret = false
-	if (love.mouse.isDown(1) and pancake.collisionCheck({x = love.mouse.getX(), y = love.mouse.getY(), width = 1, height = 1}, {x = button.x, y = button.y, width = button.width*button.scale, height = button.height*button.scale})) or love.keyboard.isDown(button.key) then
-		ret = true
+	if pancake.os == "Android" then
+		local touches = love.touch.getTouches()
+		if #touches > 0 then
+			for i = 1, #touches do
+				local x, y = love.touch.getPosition(touches[i])
+				if (pancake.collisionCheck({x = x, y = y, width = 1, height = 1}, {x = button.x, y = button.y, width = button.width*button.scale, height = button.height*button.scale})) or love.keyboard.isDown(button.key) then
+					ret = true
+				end
+			end
+		end
+	else
+		if (love.mouse.isDown(1) and pancake.collisionCheck({x = love.mouse.getX(), y = love.mouse.getY(), width = 1, height = 1}, {x = button.x, y = button.y, width = button.width*button.scale, height = button.height*button.scale})) or love.keyboard.isDown(button.key) then
+			ret = true
+		end
 	end
 	return ret
 end
 
-function pancake.checkButtonPresses(x,y,button)
+function pancake.checkButtonPresses(x,y)
 	local buttons = pancake.buttons
 	if buttons[1] then
 		for i = 1, #buttons do
@@ -1216,10 +1283,31 @@ end
 --- PANCAKE MOUSePRESS ---
 --------------------------
 function pancake.mousepressed(x, y, button)
+	if pancake.os ~= "Android" then
+		--checking if ant button was pressed
+		pancake.checkButtonPresses(x,y)
+		--switching target (in debug mode)
+		switchTarget(x,y, true)
+	end
+end
+
+function pancake.touchpressed( id, x, y, dx, dy, pressure )
 	--checking if ant button was pressed
-	pancake.checkButtonPresses(x,y,button)
+	pancake.checkButtonPresses(x,y)
 	--switching target (in debug mode)
 	switchTarget(x,y, true)
+end
+
+function pancake.keypressed(key)
+	local buttons = pancake.buttons
+	if buttons[1] then
+		for i = 1, #buttons do
+			local button = buttons[i]
+			if button.key == key and button.func then
+				button.func()
+			end
+		end
+	end
 end
 
 function switchTarget(x,y, lock)
@@ -1341,51 +1429,51 @@ function defineLetters()
 	letters.b = {pix(11), pix(12), pix(13), pix(14), pix(22), pix(24), pix(33), width = 3}
 	letters.c = {pix(13), pix(22), pix(24), pix(32), pix(34), width = 3}
 	letters.d = {pix(13), pix(22), pix(24),pix(31), pix(32), pix(33), pix(34), width = 3}
-	letters.e = {pix(12), pix(13), pix(21), pix(22), pix(24), pix(32), width = 3}
-	letters.f = {pix(13), pix(21), pix(22), pix(23), pix(24), pix(31),pix(33), width = 3}
-	letters.g = {pix(12), pix(13), pix(21), pix(23), pix(31), pix(32), pix(33), pix(34), pix(25), pix(35), width = 3}
+	letters.e = {pix(12), pix(13), pix(14), pix(21), pix(23), pix(25), pix(32), pix(33), width = 3}
+	letters.f = {pix(13), pix(21), pix(22), pix(23), pix(24), pix(31),pix(33),pix(25), width = 3}
+	letters.g = {pix(12), pix(13), pix(14), pix(22), pix(24), pix(32), pix(33), pix(34), pix(35), pix(26), pix(36), width = 3}
 	letters.h = {pix(11), pix(12), pix(13), pix(14), pix(22), pix(33), pix(34),width = 3}
 	letters.i = {pix(11), pix(13), pix(14), width = 1}
 	letters.j = {pix(21), pix(23), pix(24), pix(14), width = 2}
 	letters.k = {pix(11), pix(12), pix(13), pix(14), pix(23), pix(32), pix(34), width = 3}
 	letters.l = {pix(11), pix(12), pix(13), pix(14), pix(24), width = 2}
-	letters.m = {pix(12), pix(13), pix(14), pix(23), pix(32), pix(33), pix(42), pix(43), pix(44), width = 4}
+	letters.m = {pix(13), pix(14), pix(22), pix(33), pix(42), pix(53), pix(54), width = 5}
 	letters.n = {pix(12), pix(13), pix(14), pix(22), pix(33), pix(34), width = 3}
 	letters.o = {pix(12), pix(13), pix(14), pix(22), pix(24), pix(32), pix(33), pix(34), width = 3}
-	letters.p = {pix(11), pix(12), pix(13), pix(14), pix(21), pix(23), pix(32), pix(33), width = 3}
+	letters.p = {pix(12), pix(13), pix(14), pix(15), pix(22), pix(24), pix(33), pix(34), width = 3}
 	letters.r = {pix(12), pix(13), pix(14), pix(23), pix(32), width = 3}
 	letters.s = {pix(12), pix(14), pix(21), pix(23), pix(24), width = 2}
 	letters.t = {pix(12), pix(21), pix(22), pix(23), pix(24), pix(32), width = 3}
-	letters.u = {pix(12), pix(13), pix(24), pix(32), pix(33), pix(34), width = 3}
+	letters.u = {pix(12), pix(13),pix(14), pix(24), pix(32), pix(33), pix(34), width = 3}
 	letters.v = {pix(12), pix(13), pix(24), pix(32), pix(33), width = 3}
-	letters.w = {pix(12), pix(13), pix(24), pix(33), pix(34), pix(42), pix(43), width = 4}
+	letters.w = {pix(12), pix(13), pix(24), pix(32), pix(33), pix(44), pix(52),pix(53), width = 5}
 	letters.x = {pix(12), pix(14), pix(23), pix(32), pix(34), width = 3}
-	letters.y = {pix(12), pix(13), pix(23), pix(24), pix(32), pix(33), width = 3}
+	letters.y = {pix(12), pix(13), pix(23), pix(24), pix(32), pix(33),pix(25), width = 3}
 	letters.z = {pix(11), pix(14), pix(21), pix(23), pix(24), pix(31), pix(34), pix(32), width = 3}
 	letters.A = {pix(12), pix(13), pix(14), pix(21), pix(23), pix(31), pix(33), pix(42), pix(43), pix(44), width = 4}
 	letters.B = {pix(12), pix(13), pix(14), pix(11), pix(21), pix(23), pix(24), pix(31), pix(32), pix(34), pix(43), pix(44), width = 4}
 	letters.C = {pix(12), pix(13), pix(21), pix(24), pix(31), pix(34), width = 3}
 	letters.D = {{x = 1, y = 2}, {x = 1, y = 3}, {x = 1, y = 4}, {x = 2, y = 1}, pix(24), pix(31), pix(34), pix(42), pix(43), pix(11), width = 4}
-	letters.E = {pix(12), pix(13), pix(14), pix(11), pix(21), pix(22), pix(24), pix(31), pix(32), pix(34), pix(41), pix(44),width = 4}
-	letters.F = {pix(12), pix(13), pix(14), pix(11), pix(21), pix(23), pix(31), pix(33), pix(41), width = 4}
+	letters.E = {pix(12), pix(13), pix(14), pix(11), pix(21), pix(22), pix(24), pix(31), pix(34),width = 3}
+	letters.F = {pix(12), pix(13), pix(14), pix(11), pix(21), pix(23), pix(31), width = 3}
 	letters.G = {pix(12), pix(13), pix(21), pix(24), pix(31), pix(34), pix(41), pix(43), pix(44), width = 4}
 	letters.H = {pix(11), pix(12), pix(13), pix(14), pix(22), pix(32), pix(41), pix(42), pix(43), pix(44), width = 4}
 	letters.I = {pix(11), pix(14), pix(21), pix(22), pix(23), pix(24), pix(31), pix(34),  width = 3}
 	letters.J = {pix(11), pix(13), pix(21), pix(24), pix(31), pix(34), pix(41), pix(42), pix(43), width = 4}
 	letters.K = {pix(11), pix(12), pix(13), pix(14), pix(23), pix(32), pix(33), pix(41), pix(44), width = 4}
 	letters.L = {pix(11), pix(12), pix(13), pix(14), pix(24), pix(34), pix(44), width = 4}
-	letters.M = {pix(11), pix(12), pix(13), pix(14), pix(22), pix(23),pix(32), pix(33), pix(41), pix(42), pix(43), pix(44), width = 4}
+	letters.M = {pix(11), pix(12), pix(13), pix(14), pix(22), pix(33),pix(42), pix(51), pix(52), pix(53), pix(54), width = 5}
 	letters.N = {pix(11), pix(12), pix(13), pix(14), pix(22), pix(33), pix(42), pix(43), pix(44), pix(41), width = 4}
 	letters.O = {pix(12), pix(13), pix(21), pix(24), pix(31), pix(34), pix(42), pix(43), width = 4}
 	letters.P = {pix(11), pix(12), pix(13), pix(14), pix(21), pix(23), pix(31), pix(33), pix(42), width = 4}
 	letters.R = {pix(11), pix(12), pix(13), pix(14), pix(21), pix(23), pix(31), pix(33), pix(42), pix(44),  width = 4}
 	letters.S = { pix(12), pix(14), pix(21), pix(22), pix(24), pix(31), pix(33), pix(34), pix(41), pix(43), pix(44), width = 4}
-	letters.T = {pix(11), pix(21), pix(22), pix(23), pix(24), pix(31), pix(32), pix(33), pix(34), pix(41),width = 4}
+	letters.T = {pix(11), pix(21), pix(22), pix(23), pix(24), pix(31),width = 3}
 	letters.U = {pix(11), pix(12), pix(13), pix(24), pix(34), pix(41), pix(42), pix(43), width = 4}
-	letters.V = {pix(11), pix(12), pix(13), pix(23), pix(24), pix(33), pix(34), pix(41), pix(42), pix(43), width = 4}
-	letters.W = {pix(11), pix(12), pix(13), pix(14), pix(23), pix(24), pix(33), pix(34), pix(41), pix(42), pix(43), pix(44), width = 4}
+	letters.V = {pix(11), pix(12), pix(13), pix(23), pix(24), pix(31), pix(32), pix(33), width = 3}
+	letters.W = {pix(11), pix(12), pix(13), pix(24), pix(33), pix(44), pix(51), pix(52), pix(53), width = 5}
 	letters.X = {pix(11), pix(14), pix(22), pix(23), pix(32), pix(33), pix(41), pix(44), width = 4}
-	letters.Y = {pix(11), pix(12), pix(23), pix(24), pix(33), pix(34), pix(41), pix(42), width = 4}
+	letters.Y = {pix(11), pix(12), pix(23), pix(24), pix(31), pix(32), width = 3}
 	letters.Z = {pix(11), pix(14), pix(21), pix(23), pix(24), pix(31), pix(32), pix(34), pix(41), pix(44), width = 4}
 	letters["!"]= {pix(11), pix(12), pix(14), width = 1}
 	letters.q = {pix(13), pix(14), pix(22), pix(24), pix(32), pix(33), pix(34), pix(35), width = 3}
@@ -1405,6 +1493,7 @@ function defineLetters()
 	letters["0"] = {pix(11), pix(12), pix(13), pix(14), pix(21), pix(24), pix(31), pix(32), pix(33), pix(34), width = 3}
 	letters["?"] = {pix(11), pix(21), pix(23), pix(25), pix(21), pix(31), pix(32), width = 3}
 	letters["-"] = {pix(13), pix(23), pix(33), width = 3}
+	letters["/"] = {pix(13), pix(14), pix(21),pix(22), width = 2}
 
 end
 
@@ -1500,6 +1589,7 @@ local ret = nil
 		if table[i][key] == value then
 			ret = table[i]
 			ret.i = i
+			break
 		end
 	end
 	return ret
@@ -1559,20 +1649,23 @@ function pancake.sumTables(table1, table2)
 end
 
 
-function pancake.getAxisName(axis, direction)
+function pancake.getDirectionName(axis, direction)
 	local ret
 	if axis == "x" then
-		if direction == 1 then
+		if direction > 0 then
 			ret = "right"
 		else
 			ret = "left"
 		end
 	elseif axis == "y" then
-		if direction == 1 then
+		if direction > 0 then
 			ret = "down"
 		else
 			ret = "up"
 		end
+	end
+	if direction == 0 then
+		ret = ""
 	end
 	return ret
 end
