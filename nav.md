@@ -55,4 +55,6 @@
   - [pancake.sigma()](http://mightypancake.games/#/documentation/functions/pancake.sigma())
   - [pancake.boolConversion()](http://mightypancake.games/#/documentation/functions/pancake.boolConversion())
   - [pancake.andCheck()](http://mightypancake.games/#/documentation/functions/pancake.andCheck())
-
+  - [pancake.round()](http://mightypancake.games/#/documentation/functions/pancake.round())
+  - [pancake.sumTables()](http://mightypancake.games/#/documentation/functions/pancake.sumTables())
+  - [pancake.getDirectionName()](http://mightypancake.games/#/documentation/functions/pancake.getDirectionName())
