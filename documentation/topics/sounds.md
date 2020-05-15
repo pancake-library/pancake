@@ -4,6 +4,8 @@
 
 It's a sound that can be added, played or muted with ease!
 
+!> **NOTE:** Pancake only supports `.wav` files as sounds!
+
 ## How to add a sound?
 
 You create a sound using [`pancake.addSound()`](http://mightypancake.games/#/documentation/functions/pancake.addSound()):
