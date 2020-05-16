@@ -22,6 +22,8 @@
   - [Images](http://mightypancake.games/#/documentation/topics/images)
   - [Buttons](http://mightypancake.games/#/documentation/topics/buttons)
   - [Timers](http://mightypancake.games/#/documentation/topics/timers)
+  - [Debug Mode](http://mightypancake.games/#/documentation/topics/debug_mode)
+  - [Pause](http://mightypancake.games/#/documentation/topics/pause)
 
 **Functions**
   - [pancake.addObject()](http://mightypancake.games/#/documentation/functions/pancake.addObject())
