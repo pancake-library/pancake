@@ -19,6 +19,7 @@
   - [Sounds](http://mightypancake.games/#/documentation/topics/sounds)
   - [Images](http://mightypancake.games/#/documentation/topics/images)
   - [Buttons](http://mightypancake.games/#/documentation/topics/buttons)
+  - [Timers](http://mightypancake.games/#/documentation/topics/timers)
 
 **Functions**
   - [pancake.addObject()](http://mightypancake.games/#/documentation/functions/pancake.addObject())
@@ -59,3 +60,4 @@
   - [pancake.round()](http://mightypancake.games/#/documentation/functions/pancake.round())
   - [pancake.sumTables()](http://mightypancake.games/#/documentation/functions/pancake.sumTables())
   - [pancake.getDirectionName()](http://mightypancake.games/#/documentation/functions/pancake.getDirectionName())
+  - [pancake.addTimer()](http://mightypancake.games/#/documentation/functions/pancake.addTimer())

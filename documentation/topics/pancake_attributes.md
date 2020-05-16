@@ -18,9 +18,9 @@ Collections contain all pancake made things such as:
 
 * [`objects`](http://mightypancake.games/#/documentation/topics/objects)
 
-* `timers`
+* [`timers`](http://mightypancake.games/#/documentation/topics/timers)
 
-* `images`
+* [`images`](http://mightypancake.games/#/documentation/topics/images)
 
 * [`sounds`](http://mightypancake.games/#/documentation/topics/sounds)
 
