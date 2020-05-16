@@ -1,6 +1,8 @@
 **Main articles**
   - [Home](http://mightypancake.games)
   - [Getting Started](http://mightypancake.games/#/tutorials/Getting_Started)
+  - [Games](http://mightypancake.games/#/games)
+  - [Versions](http://mightypancake.games/#/versions)
 
 **Tutorials**
   - [1. Platformer Tutorial](http://mightypancake.games/#/tutorials/platformer)
