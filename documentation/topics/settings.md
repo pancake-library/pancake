@@ -32,3 +32,5 @@ Physics parameters determine how physic in your game will work.
 * `gravityX` (0) <- Defines gravity's vector `x` parameter. It's probably going to be 0 most of the time, but hey, you can change it.
 
 * `gravityY` (10×pancake.meter) <- Defines gravity's `y` parameter.
+
+!> **NOTE:** Changing gravity affects only objects added *after* this action. If you want to globally change gravity for all [objects](http://mightypancake.games/#/documentation/topics/objects), you can do it through a loop, accessing `object.forces[1][axis]`!

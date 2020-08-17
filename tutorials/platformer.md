@@ -52,7 +52,7 @@ When you do this you should see that the pancake [animation](http://mightypancak
 How do you make an [object](http://mightypancake.games/#/documentation/topics/objects) visible? Well, you give it an image or an [animation](http://mightypancake.games/#/documentation/topics/animations). In this case, we will create an [animation](http://mightypancake.games/#/documentation/topics/animations), so he doesn't look like he's dead. To make that, we need some images (frames), so that we can define our [animation](http://mightypancake.games/#/documentation/topics/animations)!
 Go [here](https://github.com/pancake-library/platformer-template/tree/master/images) and download assets that are going to be used in this tutorial! After downloading them, copy the `images` folder and swap it with your `images` folder in your game folder!
 
-Now, let's get back to coding. Under the line, you've previously written add these two:
+Now, let's get back to coding. Under the line you've previously written, add these two:
 
 ```lua
 pancake.addAnimation("dexter", "idle", "images/animations", 100)

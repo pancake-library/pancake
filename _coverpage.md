@@ -2,7 +2,7 @@
 
 # pancake <small>v.1.1.1</small>
 
-> Make simple 2D games easier then ever before!
+> Make simple 2D games easier than ever before!
 
 * Simple and convenient
 * Imagination is the limit

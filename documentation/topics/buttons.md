@@ -25,7 +25,7 @@ Buttons have their attributes that help you decide how they look, where they are
 You add a button by using [`pancake.addButton()`](http://mightypancake.games/#/documentation/functions/pancake.addButton())
 
 ```lua
-pancake.addSound({name = "left_button", height = 8, width = 8, func = leftPressed, key = "a"})
+pancake.addButton({name = "left_button", height = 8, width = 8, func = leftPressed, key = "a"})
 ```
 
 The command above will create a button with `name`, `height`, `width`, `func` and `key`.
