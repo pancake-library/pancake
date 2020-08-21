@@ -1,6 +1,6 @@
 ![logo](logo_small.svg)
 
-# pancake <small>v.1.1.1</small>
+# pancake <small>v.2.0</small>
 
 > Make simple 2D games easier than ever before!
 
