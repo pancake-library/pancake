@@ -1,6 +1,7 @@
-pancake =  require "pancake" 
+pancake =  require "pancake"
 function love.load()
-	pancake.init({window = {pixelSize = love.graphics.getHeight()/64}}) --Initiating pancake and setting pixelSize, so that the pancake display will be the height of the window! pixelSize is how many pixels every pancake pixel should take
+	local pixelSize = love.graphics.getHeight()/128
+	pancake.init({window = {pixelSize = pixelSize, width = 228, height = 128}}) --Initiating pancake and setting pixelSize, so that the pancake display will be the height of the window! pixelSize is how many pixels every pancake pixel should take
 end
 
 function pancake.onCollision() --This function will be called whenever a physic object collides with a colliding object!

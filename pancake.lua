@@ -18,15 +18,19 @@ local pancake = {	}
 local smallfolk = require "libraries/smallfolk" --smallfolk: https://github.com/gvx/Smallfolk
 
 function pancake.init (settings)
+	local settings = settings or {}
 	--Applying scale filter...
 	love.graphics.setDefaultFilter( "nearest", "nearest", 1)
+	pancake.lightShader = love.graphics.newShader("shaders/pancakeLightShader.glsl", "shaders/vertex.glsl")
 	--Creating important tables such as objects or images...
 	pancake.objects = {}
+	pancake.visuals = {}
 	pancake.images = {}
 	pancake.sounds = {}
 	pancake.buttons = {}
 	pancake.timers = {}
 	pancake.trashbin = {}
+	pancake.groupShaders = {}
 	pancake.lastID = 0
 	pancake.cameraFollow = nil
 	defineLetters()
@@ -43,8 +47,14 @@ function pancake.init (settings)
 	window.y = window.y or love.graphics.getHeight()/2 - pixelSize*window.height/2
 	window.offsetX = window.offsetX or 0
 	window.offsetY = window.offsetY or 0
+	local renderExtension = window.renderExtension or {}
+	renderExtension.x = renderExtension.x or 0
+	renderExtension.y = renderExtension.y or 0
+	window.renderExtension = renderExtension
 	pancake.window = window
 	pancake.canvas = love.graphics.newCanvas(pancake.window.width*pixelSize, pancake.window.height*pixelSize)
+	pancake.lightCanvas = love.graphics.newCanvas(pancake.window.width + 2*renderExtension.x, pancake.window.height + 2*renderExtension.y)
+	pancake.lightCanvasRenderer = love.graphics.newCanvas(pancake.window.width + 2*renderExtension.x, pancake.window.height + 2*renderExtension.y)
 	--Setting background...
 	local background = settings.background or {}
 	background.r = background.r or 1
@@ -72,6 +82,7 @@ function pancake.init (settings)
 	pancake.autoDraw = true
 	pancake.layerDepth = settings.layerDepth or 0.75
 	pancake.animations = {}
+	pancake.lights = {}
 	pancake.screenShake = true
 	pancake.loadAnimation = {}
 	pancake.paused = false
@@ -121,7 +132,7 @@ function pancake.init (settings)
 	show.tools = false
 	show.displayLayer = false
 	show.vectors = false
-	show.hitboxes = true
+	show.hitboxes = false
 	show.info = false
 	debug.show = show
 
@@ -141,17 +152,26 @@ function pancake.init (settings)
 	love.graphics.setCanvas()
 
 	pancake.debug = debug
-	--local shaderCode = "vec4 effect(vec4 color, Image tex, vec2 texture_coords, vec2 screen_coords){ vec4 texturecolor = Texel(tex, texture_coords); return vec4(1.0,1.0,1.0,0.8)*texturecolor; } vec4 position(mat4 transform_projection, vec4 vertex_position){ return transform_projection*vertex_position; }"
-	--pancake.shader = love.graphics.newShader(shaderCode)
+	pancake.functions = {}
+	--pancake.shader = love.graphics.newShader("shaders/collisionObjectsShaderPixel.txt", "shaders/vertex.txt")
 end
 
 ----------------------
 --Drawing functions!--
 ----------------------
 function pancake.draw()
+	if pancake.cameraFollow then
+		cameraFollowObjects()
+	end
 	--love.graphics.setShader(pancake.shader)
 	local scale = pancake.window.pixelSize
 	local window = pancake.window
+	--Drawing mask for light!
+	if pancake.useLights then
+		love.graphics.translate(-window.offsetX,-window.offsetY)
+		drawLightMask()
+		love.graphics.translate(window.offsetX,window.offsetY)
+	end
 	--Drawing pancake canvas! WITH BORDERS!!
 	love.graphics.setCanvas(pancake.canvas)
 	love.graphics.clear()
@@ -164,10 +184,88 @@ function pancake.draw()
 	love.graphics.setColor(1,1,1,1)
 	drawObjects()
 	love.graphics.setColor(1,1,1,1)
+	--pancake.drawLine(pancake.lineFromPoints(player, pancake.find(pancake.objects, "box3", "name")))
+	--DELETE LATER
+	if player and enemies then
+		for _, enemy in ipairs(enemies) do
+			--pancake.drawLine(pancake.lineFromPoints(player, pancake.find(pancake.objects, "box3", "name")))
+			--[[love.graphics.setColor(0,0,1,1)
+			local object1 = player
+			local object2 = enemy
+			local point1 = {x = object1.x + object1.width/2, y = object1.y + object1.height/2}
+			local point2 = {x = object2.x + object2.width/2, y = object2.y + object2.height/2}
+			--
+			local mainLine = pancake.lineFromPoints(point1, point2)
+			--pancake.drawLine(mainLine)
+			local object = enemy
+			local destination = player
+			local x = destination.x - object.x
+			local y = destination.y - object.y
+			mainLines = {}
+			local point = {x = object.x, y = object.y}
+			mainLines[#mainLines + 1] = pancake.lineFromPoints({x = point.x, y = point.y}, {x = point.x + x, y = point.y + y})
+			point = {x = (object.x + object.width), y = object.y}
+			mainLines[#mainLines + 1] = pancake.lineFromPoints({x = point.x, y = point.y}, {x = point.x + x, y = point.y + y})
+			point = {x = object.x, y = object.y + object.height}
+			mainLines[#mainLines + 1] = pancake.lineFromPoints({x = point.x, y = point.y}, {x = point.x + x, y = point.y + y})
+			point = {x = (object.x + object.width), y = object.y + object.height}
+			mainLines[#mainLines + 1] = pancake.lineFromPoints({x = point.x, y = point.y}, {x = point.x + x, y = point.y + y})
+			mainLines[#mainLines + 1] = pancake.lineFromPoints({x = object.x + x, y = object.y + y}, {x = object.x + object.width + x, y = object.y + y})
+			mainLines[#mainLines + 1] = pancake.lineFromPoints({x = object.x + object.width + x, y = object.y + y}, {x = object.x + object.width + x, y = object.y + object.height + y})
+			mainLines[#mainLines + 1] = pancake.lineFromPoints({x = object.x + x, y = object.y + y}, {x = object.x + x, y = object.y + object.height + y})
+			mainLines[#mainLines + 1] = pancake.lineFromPoints({x = object.x + x, y = object.y + object.height + y}, {x = object.x + object.width + x, y = object.y + object.height + y})
+
+			for i, line in ipairs(mainLines) do
+				pancake.drawLine(line)
+			end]]--
+			--[[if enemy.path then
+				love.graphics.setColor(0,1,0,1)
+				for p, point in ipairs(enemy.path) do
+					if p == 1 then
+						pancake.drawLine(pancake.lineFromPoints({x = enemy.x + enemy.width/2, y = enemy.y + enemy.height/2}, {x = point.x + enemy.width/2, y = point.y + enemy.height/2}))
+					else
+						local lastPoint = enemy.path[p-1]
+						pancake.drawLine(pancake.lineFromPoints({x = point.x + enemy.width/2, y = point.y + enemy.height/2}, {x = lastPoint.x + enemy.width/2, y = lastPoint.y + enemy.height/2}))
+					end
+				end
+			end
+			local sightLine = pancake.lineFromPoints({x = player.x + player.width/2, y = player.y + player.height/2}, {x = enemy.x + enemy.width/2, y = enemy.y + enemy.height/2})
+			if canEnemySeePlayer(enemy) then
+				love.graphics.setColor(0.2,0.6,0.9)
+			else
+				love.graphics.setColor(1,0.2,0.2)
+			end
+			pancake.drawLine(sightLine)
+		end]]--
+		--[[
+		local hitboxLines
+		love.graphics.setColor(1,0,0,1)
+		for _, object in ipairs(pancake.objects) do
+			if object.colliding then
+				hitboxLines = {}
+				hitboxLines[1] = pancake.lineFromPoints({x = object.x, y = object.y}, {x = object.x + object.width, y = object.y})
+				hitboxLines[2] = pancake.lineFromPoints({x = object.x + object.width, y = object.y}, {x = object.x + object.width, y = object.y + object.height})
+				hitboxLines[3] = pancake.lineFromPoints({x = object.x, y = object.y}, {x = object.x, y = object.y + object.height})
+				hitboxLines[4] = pancake.lineFromPoints({x = object.x, y = object.y + object.height}, {x = object.x + object.width, y = object.y + object.height})
+				for i, line in ipairs(hitboxLines) do
+					pancake.drawLine(line)
+				end
+			end]]--
+		end
+	end
+	love.graphics.setColor(1,1,1,1)
+	--
 	if pancake.debugMode and pancake.debug.show.hitboxes then
 		drawHitboxes()
 	end
 	if pancake.debugMode then
+		if pancake.debug.editMode then
+			love.graphics.setColor(0,1,1,0.7)
+			for l, light in ipairs(pancake.lights) do
+				love.graphics.circle("fill", light.x, light.y, scale/4)
+			end
+			love.graphics.setColor(1,1,1,1)
+		end
 		if pancake.debug.show.info then
 			drawNerdData()
 		end
@@ -188,8 +286,25 @@ function pancake.draw()
 		if pancake.shake and pancake.shake.mode == "external" then
 			love.graphics.translate(pancake.shake.offsetX*scale,pancake.shake.offsetY*scale)
 		end
-		love.graphics.draw(pancake.canvas, pancake.window.x, pancake.window.y)
+
+		--Lights :/
+		if pancake.useLights then
+			local renderExtension = pancake.window.renderExtension
+			love.graphics.origin()
+			pancake.sendDataToShader()
+			love.graphics.setCanvas(pancake.lightCanvasRenderer)
+			love.graphics.setShader(pancake.lightShader)
+			love.graphics.draw(pancake.lightCanvas)
+			love.graphics.setShader()
+			love.graphics.setCanvas(pancake.canvas)
+			--love.graphics.rectangle("fill", 0, 0, pancake.window.width, pancake.window.height)
+			love.graphics.scale(scale)
+			love.graphics.draw(pancake.lightCanvasRenderer, -renderExtension.x, -renderExtension.y)
+			love.graphics.setCanvas()
+		end
 		love.graphics.origin()
+		love.graphics.setShader(pancake.defaultShader)
+		love.graphics.draw(pancake.canvas, pancake.window.x, pancake.window.y)
 	end
 	pancake.drawButtons()
 	if pancake.debugMode then
@@ -198,6 +313,86 @@ function pancake.draw()
 		love.graphics.origin()
 		--pancake.print(love.timer.getFPS() .. " FPS", 0, 0, 20)
 	end
+end
+
+function drawLightMask()
+	local renderExtension = pancake.window.renderExtension
+	love.graphics.setCanvas(pancake.lightCanvasRenderer)
+	love.graphics.clear()
+	love.graphics.setCanvas(pancake.lightCanvas)
+	love.graphics.clear()
+	love.graphics.translate(renderExtension.x,renderExtension.y)
+	for i, object in pairs(pancake.objectsToRender) do
+		if object.lightBlocker and object.colliding == true then
+			drawObject(object)
+		end
+	end
+	love.graphics.translate(-renderExtension.x,-renderExtension.y)
+end
+
+function pancake.sendDataToShader()
+	local amount = 100
+	local window = pancake.window
+	local lightsColors = {}
+	local lights = {}
+	local limits = {}
+	for i, light in ipairs(pancake.lights) do
+		local start = light.start or 1.0
+		local finish = light.finish or 0.0
+		lights[i] = {light.x, light.y, light.radius, 1.0}
+		lightsColors[i] = {light.color.r, light.color.g, light.color.b, 1.0}
+		limits[i] = {start, finish}
+	end
+	if #pancake.lights < amount then
+		for i = #pancake.lights + 1, amount - #pancake.lights do
+			lights[i] = {0.0,0.0,0.0,0.0}
+			lightsColors[i] = {0.0,0.0,0.0, 1.0}
+			limits[i] = {0.0, 0.0}
+		end
+	end
+
+	pancake.lightShader:send("lights", unpack(lights))
+	pancake.lightShader:send("limits", unpack(limits))
+	pancake.lightShader:send("lightsColors", unpack(lightsColors))
+	--pancake.lightShader:send("pixelSize", pancake.window.pixelSize)
+	pancake.lightShader:send("pancakeWindow", {window.x, window.y, window.width, window.height})
+	pancake.lightShader:send("camera", {-window.offsetX,-window.offsetY})
+	pancake.lightShader:send("renderExtension", {window.renderExtension.x, window.renderExtension.y})
+end
+
+function pancake.drawLine(line, scale, smooth)
+	local scale = scale or 1
+	if smooth then
+		if line.y then
+			love.graphics.line(line.start, line.start*line.a + line.b, line.finish, line.finish*line.a + line.b)
+		else
+			love.graphics.line(line.b, line.start, line.b, line.finish)
+		end
+	else
+		if (not line.y) and (line.a) then
+			love.graphics.rectangle("fill", pancake.round(line.start), pancake.round(line.start*line.a + line.b), scale, math.abs(line.finish-line.start)*scale)
+		elseif line.a then
+			local longerAxis = pancake.boolConversion(math.abs(line.a) > 1, "y", "x")
+			local start, finish
+			if longerAxis == "x" then
+				start = pancake.round(line.start)
+				finish = pancake.round(line.finish)
+				for i = start, finish do
+					love.graphics.rectangle("fill", i*scale, pancake.round(i*line.a + line.b)*scale, scale, scale)
+				end
+			else
+				start = pancake.round(line.start*line.a + line.b)
+				finish = pancake.round(line.finish*line.a + line.b)
+				for i = start, finish, pancake.sigma(finish - start) do
+					love.graphics.rectangle("fill", pancake.round((i - line.b)/line.a)*scale, i*scale, scale, scale)
+				end
+			end
+		end
+	end
+end
+
+function pancake.getCenter(object)
+	return {x = object.x + object.width/2, y = object.y + object.height/2}
 end
 
 function drawDebug()
@@ -370,7 +565,7 @@ function drawDebug()
 		end
 	end
 
-	if love.keyboard.isDown("lshift") or pancake.collisionCheck({x = 2.8*scale*10.8, y = 2.8*scale*10.8, width = 12*scale*10.8, height = 8*scale*10.8}, {x = love.mouse.getX(), y = love.mouse.getY(), width = 1, height = 1}) then
+	if love.keyboard.isDown("rshift") or pancake.collisionCheck({x = 2.8*scale*10.8, y = 2.8*scale*10.8, width = 12*scale*10.8, height = 8*scale*10.8}, {x = love.mouse.getX(), y = love.mouse.getY(), width = 1, height = 1}) then
 		love.graphics.setColor(0,0,0,1)
 		love.graphics.draw(pancake.images.pixel_pancake_icon, -3.53*10.8, -3.3*10.8, 0, 1.5*10.8)
 		love.graphics.setColor(1,1,1,1)
@@ -467,23 +662,42 @@ function switchEditMode()
 end
 
 function drawLoadAnimation()
+	local pixelSize = pancake.window.pixelSize
+	local width = pancake.window.width
+	local height = pancake.window.height
 	local animation = pancake.loadAnimation
-	local scale = pancake.window.pixelSize*pancake.window.height/16
+	local lowerCoord = pancake.boolConversion(pancake.window.width > pancake.window.height, "height", "width")
+	local scale = pixelSize*pancake.window[lowerCoord]/16
+	local x
+	local y
+	if pancake.window.width == pancake.window.height then
+		x = 0
+		y = 0
+	elseif lowerCoord == "height" then
+		y = 0
+		x = (width/2*pixelSize - 8*scale)/scale
+	elseif lowerCoord == "width" then
+		y = (height/2*pixelSize - 8*scale)/scale
+		x = 0
+	end
 	love.graphics.scale(scale)
 	if not (animation.frame == 35 and animation.time >= 2500) then
+		if animation.frame > 11 then
+			love.graphics.setColor(243/256,199/256,46/256,1)
+		end
+		love.graphics.rectangle("fill", 0, 0, width/scale*pixelSize, height/scale*pixelSize)
 		love.graphics.setColor(1,1,1,1)
-		love.graphics.rectangle("fill", 0, 0, 16, 16)
-		love.graphics.draw(pancake.images[animation[animation.frame]])
+		love.graphics.draw(pancake.images[animation[animation.frame]], x, y)
 	end
 	if animation.frame == 1 then
 		love.graphics.setColor(0,0,0,1-(animation.time + 100)/animation.duration)
-		love.graphics.rectangle("fill", 0, 0, 16, 16)
+		love.graphics.rectangle("fill", 0, 0, width/scale*pixelSize, height/scale*pixelSize)
 	elseif animation.frame == 35 and animation.time <= 2500 then
 		love.graphics.setColor(0,0,0,(animation.time-1500)/1000)
-		love.graphics.rectangle("fill", 0, 0, 16, 16)
+		love.graphics.rectangle("fill", 0, 0, width/scale*pixelSize, height/scale*pixelSize)
 	elseif animation.frame == 35 and animation.time >= 2500 then
 		love.graphics.setColor(0,0,0,1-(animation.time - 2500)/1000)
-		love.graphics.rectangle("fill", 0, 0, 16, 16)
+		love.graphics.rectangle("fill", 0, 0, width/scale*pixelSize, height/scale*pixelSize)
 	end
 	love.graphics.setColor(1,1,1,1)
 end
@@ -491,8 +705,7 @@ end
 function drawMoveVectors()
 	local pixelSize = pancake.window.pixelSize
 	local scale = scale or pancake.window.pixelSize/6
-	for i = 1, #pancake.renderedObjects() do
-		local object = pancake.renderedObjects()[i]
+	for i, object in ipairs(pancake.objectsToRender) do
 		if object.physics then
 			local layer = object.layer or 1
 			if not pancake.debug.displayLayer or pancake.debug.displayLayer == layer then
@@ -519,15 +732,31 @@ end
 
 function pancake.renderedObjects()
 	local window = pancake.window
+	local re = window.renderExtension
 	local ret = {}
-	for i = 1, #pancake.objects do
-		local object = pancake.objects[i]
-		if pancake.collisionCheck({x = window.offsetX, y = window.offsetY, width = window.width, height = window.height}, object) then
+	for i, object in ipairs(pancake.objects) do
+		if pancake.collisionCheck({x = window.offsetX - re.x, y = window.offsetY - re.y, width = window.width + re.x*2, height = window.height + re.y*2}, object) then
 			ret[#ret + 1] = object
 		end
 	end
-	table.sort(ret, function(a,b) local fa = a.layer or 1 local fb = b.layer or 1 return fa > fb end)
+	for i, object in ipairs(pancake.visuals) do
+		local object = pancake.visuals[i]
+		if pancake.collisionCheck({x = window.offsetX - re.x, y = window.offsetY - re.y, width = window.width + re.x*2, height = window.height + re.y*2}, object) then
+			ret[#ret + 1] = object
+		end
+	end
+	table.sort(ret, pancake.compareObjectRenderPriority)
 	return ret
+end
+
+function pancake.compareObjectRenderPriority(a,b)
+	local fa = a.layer or 1
+	local fb = b.layer or 1
+	if fa == fb then
+		return a.ID < b.ID
+	else
+		return fa > fb
+	end
 end
 
 function pancake.drawInfo(x, y)
@@ -567,6 +796,12 @@ function pancake.windowToDisplay(x,y, cameraRelative)
 	return ret
 end
 
+function pancake.displayToWindow(x, y)
+	local x = pancake.round((love.mouse.getX() - pancake.window.x)/pancake.window.pixelSize)
+	local y = pancake.round((love.mouse.getY() - pancake.window.y)/pancake.window.pixelSize)
+	return {x = x, y = y}
+end
+
 function drawBackground()
 	local background = pancake.background
 	love.graphics.setColor(background.r, background.g, background.b, background.a)
@@ -578,8 +813,22 @@ function drawBackground()
 	love.graphics.setColor(1,1,1,1)
 end
 
+function deegreesToRadians(number)
+	if number and type(number) == "number" then
+		return number*(math.pi/180)
+	end
+end
+
+function pancake.queueToUpdateEnd(func, argument)
+	if not pancake.updateEndQueue then
+		pancake.updateEndQueue = {}
+	end
+	pancake.updateEndQueue[#pancake.updateEndQueue + 1] = {func = func, argument = argument}
+end
+
 function drawObject(object,x,y,scale)
-	local objects = pancake.renderedObjects()
+	local rotation = deegreesToRadians(object.rotation) or 0
+	local objects = pancake.objectsToRender
 	local layers = objects[1].layer or 1
 	local scale = scale or 1
 	local layer = object.layer or 1
@@ -600,32 +849,87 @@ function drawObject(object,x,y,scale)
 		local offsetY = pancake.boolConversion(object.offsetY, object.offsetY, 0)*pancake.boolConversion(object.flippedY, -1, 1)
 		if object.image == "rectangle" then
 			love.graphics.rectangle("fill", x + offsetX*scale, y + offsetY*scale, object.width, object.height)
+		elseif object.image == "text" then
+			pancake.print(object.text, x + offsetX*scale, y + offsetY*scale, scale)
+		elseif object.image == "line" then
+			--if not object.line then
+				--object.line =
+			--end
+			pancake.drawLine(pancake.lineFromPoints({x=object.x,y=object.y}, {x=object.x + object.width*pancake.boolConversion(object.flippedX, -1, 1),y= object.y + object.height*pancake.boolConversion(object.flippedY, -1, 1)}), scale)
 		elseif pancake.images[object.image] then
+			local image
 			if object.textured then
-				local texture = {width = object.textureWidth or pancake.boolConversion(pancake.images[object.image], pancake.images[object.image]:getWidth(), 16), height = object.textureHeight or pancake.boolConversion(pancake.images[object.image], pancake.images[object.image]:getHeight(), 16)}
-				for px = 0, math.floor(object.width)/texture.width-1 do
-					for py = 0, math.floor(object.height)/texture.height-1 do
-						love.graphics.draw(pancake.images[object.image], x + px*texture.width,  y + py*texture.height)
-					end
-				end
+				image = object.textureCanvas
 			else
-				love.graphics.draw(pancake.images[object.image], x + offsetX*scale + pancake.boolConversion(object.flippedX, object.width, 0)*scale, y + offsetY*scale + pancake.boolConversion(object.flippedY, object.height, 0)*scale, 0, pancake.boolConversion(object.flippedX, -1, 1)*scale,pancake.boolConversion(object.flippedY, -1, 1)*scale)
+				image = pancake.images[object.image]
 			end
+			local rotationOffset = calcRotationOffset(object)
+			love.graphics.draw(image, x + offsetX*scale + pancake.boolConversion(object.flippedX, object.width, 0)*scale + rotationOffset.x, y + offsetY*scale + pancake.boolConversion(object.flippedY, object.height, 0)*scale + rotationOffset.y, rotation, pancake.boolConversion(object.flippedX, -1, 1)*scale,pancake.boolConversion(object.flippedY, -1, 1)*scale)
 		end
 	end
 end
 
+function calcRotationOffset(object)
+	local offsetX = object.offsetX or 0
+	local offsetY = object.offsetY or 0
+	local rotation = object.rotation or 0
+	if rotation == 90 then
+		return {x=object.width, y=0}
+	elseif rotation == 180 then
+		return {x=object.width, y=object.height}
+	elseif rotation == 270 then
+		return {x=0, y=object.height}
+	else
+		return {x=0, y=0}
+	end
+end
+
+function createTexturedObjectCanvas(object)
+	love.graphics.setColor(1,1,1,1)
+	local texture = {width = object.textureWidth or pancake.boolConversion(pancake.images[object.image], pancake.images[object.image]:getWidth(), 16), height = object.textureHeight or pancake.boolConversion(pancake.images[object.image], pancake.images[object.image]:getHeight(), 16)}
+	if not object.textureCanvas then
+		object.textureCanvas = love.graphics.newCanvas(object.width, object.height)
+	else
+		love.graphics.setCanvas(object.textureCanvas)
+		love.graphics.clear()
+		love.graphics.setCanvas()
+	end
+	love.graphics.setCanvas(object.textureCanvas)
+	for px = 0, math.ceil(object.width/texture.width) do
+		for py = 0, math.ceil(object.height/texture.height) do
+			love.graphics.draw(pancake.images[object.image],px*texture.width, py*texture.height)
+		end
+	end
+	love.graphics.setCanvas()
+	object.textureWidth = texture.width
+	object.textureHeight = texture.height
+end
+
 function drawObjects()
+	love.graphics.setCanvas(pancake.canvas)
 	local x = 0
 	local y = 0
-	local objects = pancake.renderedObjects()
-	if objects and objects[1] then
-		local layers = objects[1].layer or 1
+	local lightBlockers = {}
+	local objects = pancake.objectsToRender
+	local lastGroup = "default"
+	if objects then
 		for i, object in pairs(objects) do
 			local layer = object.layer or 1
+			local shaderGroup = object.shaderGroup or "default"
+			if lastGroup ~= shaderGroup then
+				local shader = pancake.groupShaders[shaderGroup]
+				love.graphics.setShader(shader)
+			end
+			lastGroup = shaderGroup
 			drawObject(object)
 		end
 	end
+	love.graphics.setShader()
+end
+
+
+function pancake.displayableObjects()
+	return pancake.sumTables(pancake.objects, pancake.visuals)
 end
 
 function pancake.changeAnimation(object, animationName)
@@ -645,6 +949,7 @@ function pancake.changeAnimation(object, animationName)
 			object.animation = animation
 		end
 	end
+	return object
 end
 
 function pancake.addAnimation(objectName, animationName, folder, speed)
@@ -658,18 +963,12 @@ function pancake.addAnimation(objectName, animationName, folder, speed)
 	local broke = false
 	if #love.filesystem.getDirectoryItems(folder) > 1 then
 		for frame = 1, 1000 do
-			local addedFrame = false
-			for i = 1, #love.filesystem.getDirectoryItems(folder) do
-				local filename = love.filesystem.getDirectoryItems(folder)[i]
-				if filename == objectName.."_"..animationName..frame..".png" then
-					pancake.addImage(objectName.."_"..animationName..frame,folder)
-					animation[frame] = objectName.."_"..animationName..frame
-					addedFrame = true
-				elseif i == #love.filesystem.getDirectoryItems(folder) and not addedFrame then
-					broke = true
-				end
-			end
-			if broke then
+			local filepath = folder .."/" .. objectName.."_"..animationName..frame..".png"
+			local info = love.filesystem.getInfo(filepath)
+			if info and info.type == "file" then
+				pancake.addImage(objectName.."_"..animationName..frame,folder)
+				animation[frame] = objectName.."_"..animationName..frame
+			else
 				animation.frames = frame - 1
 				animation.speed = speed
 				break
@@ -681,8 +980,7 @@ end
 
 function drawNerdData()
 local scale = pancake.window.pixelSize/pancake.debug.scale/2
-	for i = 1, #pancake.renderedObjects() do
-		local object = pancake.renderedObjects()[i]
+	for i, object in ipairs(pancake.objectsToRender) do
 		local x = object.x
 		local y = object.y
 		if not pancake.smoothRender then
@@ -698,9 +996,7 @@ local scale = pancake.window.pixelSize/pancake.debug.scale/2
 end
 
 function drawHitboxes()
-	local objects = pancake.renderedObjects()
-	for i = 1, #objects do
-		local object = pancake.renderedObjects()[i]
+	for i, object in ipairs(pancake.objectsToRender) do
 		local x = object.x
 		local y = object.y
 		if not pancake.smoothRender then
@@ -739,15 +1035,27 @@ function pancake.addObject(object)
 	pancake.objects[#pancake.objects + 1] = pancake.assignID(object)
 	return pancake.objects[#pancake.objects]
 end
+
+function pancake.addVisual(visual)
+	pancake.visuals[#pancake.visuals + 1] = pancake.assignID(visual)
+	return pancake.visuals[#pancake.visuals]
+end
+
+function pancake.addLight(light)
+	light.color = light.color or {r=1,g=1,b=1}
+	pancake.lights[#pancake.lights + 1] = pancake.assignID(light)
+	return pancake.lights[#pancake.lights]
+end
+
 --Physics functions
 function pancake.applyPhysics(object, settings)
 	local physics = pancake.physics
 	object.physics = true
 	local settings = settings or {}
 	object.mass = settings.mass or physics.defaultMass
-	object.maxVelocity = settings.maxVelocity or physics.defaultmaxVelocity
-	object.maxVelocityX = object.maxVelocity
-	object.maxVelocityY = object.maxVelocity
+	object.maxVelocity = settings.maxVelocity or object.maxVelocity or physics.defaultmaxVelocity
+	object.maxVelocityX = object.maxVelocityX or object.maxVelocity
+	object.maxVelocityY = object.maxVelocityY or object.maxVelocity
 	object.bounciness = settings.bounciness or physics.defaultBounciness
 	object.velocityX = 0
 	object.velocityY = 0
@@ -796,10 +1104,15 @@ function pancake.addForce(object, force) --force is a table of strength; x and y
 	return force
 end
 
-function pancake.addTimer(time, mode, func, arguments) --TIME IS IN MS! Mode can be repetitive or single. If single is pick timer will run once and execute func function once, then delete itself. Repetitive basically acts like a timed loop executing func every x seconds
+function pancake.addTimer(time, mode, func, arguments, name, params) --TIME IS IN MS! Mode can be repetitive or single. If single is pick timer will run once and execute func function once, then delete itself. Repetitive basically acts like a timed loop executing func every x seconds
 	local time = time or 1000
 	local mode = mode or "single"
-	local timer = pancake.assignID({duration = time, time = 0, mode = mode, func = func, arguments = arguments})
+	local timer = pancake.assignID({duration = time, time = 0, mode = mode, func = func, arguments = arguments, name = name})
+	if params then
+		for i, param in pairs(params) do
+			timer[i] = param
+		end
+	end
 	pancake.timers[#pancake.timers + 1] = timer
 	return timer
 end
@@ -827,11 +1140,22 @@ function pancake.update(dt)
 	updateForces(dt) --changes velocity!!!
 	--END OF PHYSICS
 	--switchTarget(love.mouse.getX(), love.mouse.getY(), false)
-	cameraFollowObjects()
 	--Handle scren shake
 	updateScreenShake(dt)
+	--Handle end update queue
+	doEndUpdateQueue()
 	--THIS SHOULD ALWAYS BE LAST
 	emptyTrash()
+	pancake.objectsToRender = pancake.renderedObjects()
+end
+
+function doEndUpdateQueue()
+	if pancake.updateEndQueue then
+		for i, task in ipairs(pancake.updateEndQueue) do
+			task.func(task.argument)
+			pancake.updateEndQueue[i] = nil
+		end
+	end
 end
 
 function updateDebug(dt)
@@ -887,7 +1211,7 @@ function addObjectStrings()
 		end
 	end
 	lists.general = {"name", "ID","x","y","width","height", "colliding"}
-	lists.physics = {"physics","mass","velocityX", "velocityY", "maxVelocityX", "maxVelocityY", "maxVelocityX", "friction", "bounciness"}
+	lists.physics = {"physics","mass","velocityX", "velocityY", "maxVelocityX", "maxVelocityY", "maxVelocity", "friction", "bounciness"}
 	lists.display = {"image","layer", "offsetX", "offsetY", "flippedX", "flippedY", "textured", "textureWidth", "textureHeight"}
 	local i = 0
 	local category = pancake.debug.objectEditCategory
@@ -1106,6 +1430,9 @@ function pancake.updateObjects(dt)
 		if object.colliding then
 			pancake.collidingObjects[#pancake.collidingObjects + 1] = object
 		end
+		if object.textured and not object.textureCanvas then
+			createTexturedObjectCanvas(object)
+		end
 	end
 	--Moving objects with remaining time!
 	for i = 1, #objects do
@@ -1121,6 +1448,9 @@ function pancake.updateObjects(dt)
 				end
 			end
 			object.image = animation[animation.frame]
+			if object.textured then
+				createTexturedObjectCanvas(object)
+			end
 		end
 		if object.physics then
 			local t = dt
@@ -1140,6 +1470,13 @@ function pancake.updateObjects(dt)
 		for i = 1, #collisions do
 			local collision = collisions[i]
 			pancake.applyForce(collision.object, collision.force, dt)
+		end
+	end
+	for i, object in ipairs(pancake.objects) do
+		if object.anchor then
+			local anchorOffset = object.anchorOffset or {x=0, y=0}
+			object.x = object.anchor.x + anchorOffset.x
+			object.y = object.anchor.y + anchorOffset.y
 		end
 	end
 end
@@ -1443,17 +1780,22 @@ end
 function updateTimers(dt)
 	local timers = pancake.timers
 	if timers[1] then
-		for i = 1, #timers do
-			local timer = timers[i]
-			timer.time = timer.time + dt*1000
-			if timer.time >= timer.duration then
-				if timer.func then
-					timer.func(timer.arguments)
-				end
-				if timer.mode == "single" then
-					pancake.trash(pancake.timers, timer.ID, "ID")
-				elseif timer.mode == "repetitive" then
-					timer.time = timer.time - timer.duration
+		for i, timer in ipairs(timers) do
+			if (not pancake.timerUpdateCondition) or pancake.timerUpdateCondition(timer) then
+				timer.time = timer.time + dt*1000
+				if timer.time >= timer.duration then
+					if timer.func then
+						if type(timer.func) == "function" then
+							timer.func(timer.arguments)
+						elseif (type(timer.func) == "string" or type(timer.func) == "number") and pancake.functions[timer.func] then
+							pancake.functions[timer.func](timer.arguments)
+						end
+					end
+					if timer.mode == "single" then
+						pancake.trash(pancake.timers, timer.ID, "ID")
+					elseif timer.mode == "repetitive" then
+						timer.time = timer.time - timer.duration
+					end
 				end
 			end
 		end
@@ -1496,12 +1838,12 @@ function pancake.move(object, x, y)
 				if not b.x and not b.y then
 					object.x = object.x + s.x
 					if pancake.isObjectColliding(object) then
-						pancake.sumTables(collisions, collideMultiple(object, "x", s.x, object.x - s.x))
+						pancake.addTable(collisions, collideMultiple(object, "x", s.x, object.x - s.x))
 						b.x = true
 					end
 					object.y = object.y + s.y
 					if pancake.isObjectColliding(object) then
-						pancake.sumTables(collisions, collideMultiple(object, "y", s.y, object.y - s.y))
+						pancake.addTable(collisions, collideMultiple(object, "y", s.y, object.y - s.y))
 						b.y = true
 					end
 				end
@@ -1516,7 +1858,7 @@ function pancake.move(object, x, y)
 						object[smallerAxis] = object[smallerAxis] + s[smallerAxis]
 						p[smallerAxis] = p[smallerAxis] - 1
 						if pancake.isObjectColliding(object) then
-							pancake.sumTables(collisions, collideMultiple(object, smallerAxis, s[smallerAxis], object[smallerAxis] - s[smallerAxis]))
+							pancake.addTable(collisions, collideMultiple(object, smallerAxis, s[smallerAxis], object[smallerAxis] - s[smallerAxis]))
 							b[smallerAxis] = true
 						end
 					end
@@ -1526,7 +1868,7 @@ function pancake.move(object, x, y)
 						object[biggerAxis] = object[biggerAxis] + s[biggerAxis]
 						p[biggerAxis] = p[biggerAxis] - 1
 						if pancake.isObjectColliding(object) then
-							pancake.sumTables(collisions,collideMultiple(object, biggerAxis, s[biggerAxis], object[biggerAxis] - s[biggerAxis]))
+							pancake.addTable(collisions,collideMultiple(object, biggerAxis, s[biggerAxis], object[biggerAxis] - s[biggerAxis]))
 							b[biggerAxis] = true
 						end
 					end
@@ -1535,14 +1877,13 @@ function pancake.move(object, x, y)
 		end
 
 	end
-
 	biggerAxis = pancake.boolConversion(math.abs(x - s.x*a.x) >= math.abs(y - s.y*a.y), "x", "y") --(x - s.x*a.x)
 	smallerAxis = pancake.boolConversion(biggerAxis == "x", "y", "x")
 	if not b[biggerAxis] then
 		local distance = (o[biggerAxis] - s[biggerAxis]*a[biggerAxis])
 		object[biggerAxis] = object[biggerAxis] + distance
 		if pancake.isObjectColliding(object) then
-			pancake.sumTables(collisions, collideMultiple(object, biggerAxis, s[biggerAxis], object[biggerAxis] - distance))
+			pancake.addTable(collisions, collideMultiple(object, biggerAxis, s[biggerAxis], object[biggerAxis] - distance))
 			b[biggerAxis] = true
 		end
 	end
@@ -1551,11 +1892,90 @@ function pancake.move(object, x, y)
 		local distance = (o[smallerAxis] - s[smallerAxis]*a[smallerAxis])
 		object[smallerAxis] = object[smallerAxis] + distance
 		if pancake.isObjectColliding(object) then
-			pancake.sumTables(collisions, collideMultiple(object, smallerAxis, s[smallerAxis], object[smallerAxis] - distance))
+			pancake.addTable(collisions, collideMultiple(object, smallerAxis, s[smallerAxis], object[smallerAxis] - distance))
 			b[smallerAxis] = true
 		end
-	end--]]
+	end
 	return collisions
+end
+
+function pancake.getIntersection(line1, line2)
+	local ret = false
+	local x = 0
+	--line = {y = true, a = 2, b = 4, start = 0, finish = 10} equals to 1*y = 1*x + 4 from start to finish
+	--if a = 0, then y = b (obviously)
+	--if not y, then line is x = b (VERY IMPORTANT)
+	if line1.y then
+		if not line2.y then
+			if (line1.start < line2.b and line1.finish > line2.b) and (not line2.start or line1.a*line2.b + line1.b > line2.start) and (not line2.finish or line1.a*line2.b + line1.b < line2.finish) then
+				ret = {x = line2.b, y = line1.a*line2.b + line1.b}
+			end
+		else
+			local left = line1.a - line2.a
+			local right = line2.b - line1.b
+			if left ~= 0 then
+				local x = right/left
+				local decPrecision = 5
+				local rx = pancake.round(x, decPrecision)
+				if ((not line1.start) or (rx > pancake.round(line1.start, decPrecision))) and ((not line2.start) or (rx > pancake.round(line2.start, decPrecision))) and ((not line1.finish) or (rx < pancake.round(line1.finish, decPrecision))) and ((not line2.finish) or (rx < pancake.round(line2.finish, decPrecision))) then
+					--if pancake.round(x) ~= pancake.round(line1.start) then
+						ret = {x = x, y = line1.a*x + line1.b}
+					--end
+				end
+			end
+		end
+	elseif line2.y then
+		ret = pancake.getIntersection(line2, line1)
+	end
+	return ret
+end
+
+function pancake.checkPointToLine(point, line)
+	local ret = false
+	--Point is a table with coordinates; for example point = {x=1, y=3}
+	--Line is a line table; line = {y = true, start = 0, finish = 100, a = 1, b = 5} then y = 1*x + 5
+	if (line.start and point.x < line.start) or (line.finish and point.x > line.finish) then
+		ret = false
+	elseif line.a*point.x + line.b == point.y then --our point is on the line
+		ret = 0 --Not above, not below
+	elseif not line.y then
+		ret = pancake.sigma(point.x - line.b)
+	else
+		ret = pancake.sigma(point.y - (point.x*line.a + line.b))
+	end
+	return ret
+end
+
+function pancake.lineFromPoints(point1, point2)
+	local ret
+	if point1.x >= point2.x then
+		if point1.x == point2.x then
+			ret = {b = point1.x, start = tonumber(pancake.boolConversion(point1.y < point2.y, point1.y, point2.y)), finish = tonumber(pancake.boolConversion(point1.y > point2.y, point1.y, point2.y))}
+		elseif point1.y == point2.y then
+			ret = {y = true, a = 0, b = point1.y, start = tonumber(pancake.boolConversion(point1.x < point2.x, point1.x, point2.x)), finish = tonumber(pancake.boolConversion(point1.x > point2.x, point1.x, point2.x))}
+		else
+			local left = point1.x - point2.x
+			local right = point1.y - point2.y
+			local a = right/left
+			local b = point1.y - a*point1.x
+			ret = {y = true, a = a, b = b, start = tonumber(pancake.boolConversion(point1.x < point2.x, point1.x, point2.x)), finish = tonumber(pancake.boolConversion(point1.x > point2.x, point1.x, point2.x))}
+		end
+	else
+		ret = pancake.lineFromPoints(point2, point1)
+	end
+	return ret
+end
+
+function pancake.calcLine(line, x)
+	local ret
+	if line.y then
+		if x >= line.start and x <= line.finish then
+			ret = line.a*x + line.b
+		else
+			ret = false
+		end
+	end
+	return ret
 end
 
 function pancake.getCollidingObjects(object)
@@ -1563,7 +1983,7 @@ function pancake.getCollidingObjects(object)
 	local objects = pancake.collidingObjects
 	for i = 1, #objects do
 		local currObject = objects[i]
-		if object ~= currObject then
+		if object.ID ~= currObject.ID then
 			if pancake.areObjectsColliding(object, currObject) then
 				ret[#ret + 1] = currObject
 			end
@@ -1572,18 +1992,39 @@ function pancake.getCollidingObjects(object)
 	return ret
 end
 
-function pancake.isObjectColliding(object)
-local ret = false
-local objects = pancake.collidingObjects
-	for i = 1, #objects do
+function pancake.getOverlapingObjects(object)
+	local ret = {}
+	local objects = pancake.objects
+	for i, currObject in ipairs(objects) do
 		local currObject = objects[i]
-		if object ~= currObject then
-			if pancake.areObjectsColliding(object, currObject) then
-				ret = true
+		if object.ID ~= currObject.ID then
+			if pancake.collisionCheck(object, currObject) then
+				ret[#ret + 1] = currObject
 			end
 		end
 	end
 	return ret
+end
+
+function pancake.isObjectColliding(object)
+	local ret = false
+	if not object.colliding then
+		return false
+	else
+		local objects = pancake.collidingObjects
+		if not objects then
+			pancake.update(0)
+			objects = pancake.collidingObjects
+		end
+		for i, currObject in ipairs (objects) do
+			if object.ID ~= currObject.ID then
+				if pancake.areObjectsColliding(object, currObject) then
+					ret = true
+				end
+			end
+		end
+		return ret
+	end
 end
 
 function pancake.areObjectsColliding(object1, object2)
@@ -1633,6 +2074,154 @@ local step = 0.00001
 		end
 	end
 	return {up = up, down = down, left = left, right = right}
+end
+
+function pancake.getPathLines(object, destination)
+	local x = destination.x - object.x
+	local y = destination.y - object.y
+	local point = {x = object.x, y = object.y}
+	--Defining path lines
+	local pathLines = {}
+	--Hitboxes while moving
+	pathLines[#pathLines + 1] = pancake.lineFromPoints({x = point.x, y = point.y}, {x = point.x + x, y = point.y + y})
+	point = {x = (object.x + object.width), y = object.y}
+	pathLines[#pathLines + 1] = pancake.lineFromPoints({x = point.x, y = point.y}, {x = point.x + x, y = point.y + y})
+	point = {x = object.x, y = object.y + object.height}
+	pathLines[#pathLines + 1] = pancake.lineFromPoints({x = point.x, y = point.y}, {x = point.x + x, y = point.y + y})
+	point = {x = (object.x + object.width), y = object.y + object.height}
+	pathLines[#pathLines + 1] = pancake.lineFromPoints({x = point.x, y = point.y}, {x = point.x + x, y = point.y + y})
+	return pathLines
+end
+
+function pancake.getPathObstacles(object, destination)
+	local objectCopy = pancake.copyTable(object)
+	local broke
+	local ret = {}
+	local point = {x = object.x, y = object.y}
+	--Defining path lines
+	local pathLines = pancake.getPathLines(object, destination)
+	--Hitboxes while moving
+	for _, cObject in ipairs(pancake.collidingObjects) do
+		objectCopy.x = cObject.x
+		objectCopy.y = cObject.y
+		if pancake.areObjectsColliding(objectCopy, cObject) then
+			local objectHitlines = {}
+			objectHitlines[#objectHitlines + 1] = pancake.lineFromPoints({x = cObject.x, y = cObject.y}, {x = cObject.x + cObject.width, y = cObject.y})
+			objectHitlines[#objectHitlines + 1] = pancake.lineFromPoints({x = cObject.x, y = cObject.y + cObject.height}, {x = cObject.x + cObject.width, y = cObject.y + cObject.height})
+			--local line1 = objectHitlines[1]
+			--if line1.a then
+				--if line1.a > 0 then
+				--	objectHitlines[#objectHitlines + 1] = pancake.lineFromPoints({x = cObject.x, y = cObject.y}, {x = cObject.x, y = cObject.y + cObject.height})
+			--	else
+				--	objectHitlines[#objectHitlines + 1] = pancake.lineFromPoints({x = cObject.x + cObject.width, y = cObject.y}, {x = cObject.x + cObject.width, y = cObject.y + cObject.height})
+			--	end
+		--	else
+				objectHitlines[#objectHitlines + 1] = pancake.lineFromPoints({x = cObject.x + cObject.width, y = cObject.y}, {x = cObject.x + cObject.width, y = cObject.y + cObject.height})
+				objectHitlines[#objectHitlines + 1] = pancake.lineFromPoints({x = cObject.x, y = cObject.y}, {x = cObject.x, y = cObject.y + cObject.height})
+		--	end
+			for ohl, hitline in ipairs(objectHitlines) do
+				if broke then
+					broke = false
+					break
+				end
+				for pl, pathline in ipairs(pathLines) do
+					if pancake.getIntersection(hitline, pathline) then
+						--[[
+						daprint = "Object with ID " .. object.ID .. " would collide with object with ID " .. cObject.ID .. "\nPath line number " .. pl .. " intersected with hit line number " .. ohl
+						if hitline.y then
+							daprint = daprint .. "\nLine 1: y = " .. hitline.a .. "x + " .. hitline.b .. ", start: " .. hitline.start .. ", finish: " .. hitline.finish
+						else
+							daprint = daprint .. "\nLine 1: x = " .. hitline.b .. ", start: " .. hitline.start .. ", finish: " .. hitline.finish
+						end
+						if pathline.y then
+							daprint = daprint .. "\nLine 2: y = " .. pathline.a .. "x + " .. pathline.b .. ", start: " .. pathline.start .. ", finish: " .. pathline.finish
+						else
+							daprint = daprint .. "\nLine 2: x = " .. pathline.b .. ", start: " .. pathline.start .. ", finish: " .. pathline.finish
+						end
+						daprint = daprint .. "\nIntersection at x = " .. pancake.getIntersection(hitline, pathline).x .. ", y = " .. pancake.getIntersection(hitline, pathline).y
+						]]--
+						ret[#ret + 1] = cObject
+						broke = true
+						break
+					end
+				end
+			end
+		end
+	end
+	return ret
+end
+
+function pancake.findPath(object, destination)
+	local banned = {}
+	local obstacles
+	local nearest
+	local point
+	local points = {{x=object.x, y=object.y, path = {}}}
+	local path = {}
+	local result = false
+	local destination = {x = destination.x, y = destination.y}
+	local objectCopy = pancake.copyTable(object)
+	while not result do
+		point = points[1]
+		local i = 1
+		if point then
+			for _, p in ipairs(points) do
+				if pancake.calculateDistance(p, destination) < pancake.calculateDistance(point, destination) then
+					point = p
+					i = _
+				end
+			end
+			objectCopy.x = point.x
+			objectCopy.y = point.y
+			obstacles = pancake.getPathObstacles(objectCopy, destination)
+			if #obstacles == 0 then
+				path = point.path
+				path[#path + 1] = {x = destination.x, y = destination.y}
+				result = true
+			else
+				nearest = obstacles[1]
+				for _, obstacle in ipairs(obstacles) do
+					if pancake.calculateDistance({x = objectCopy.x, y = objectCopy.y}, obstacle) < pancake.calculateDistance({x = objectCopy.x, y = objectCopy.y}, nearest) then
+						nearest = obstacle
+					end
+				end
+				--I have the closest obstacle now!
+				local corners = {}
+				local step = 0
+				corners[#corners + 1] = {x = nearest.x - objectCopy.width - step, y = nearest.y - objectCopy.height - step} --up left
+				corners[#corners + 1] = {x = nearest.x - objectCopy.width - step, y = nearest.y + nearest.height + step} --down left
+				corners[#corners + 1] = {x = nearest.x + nearest.width + step, y = nearest.y - objectCopy.height - step} --up right
+				corners[#corners + 1] = {x = nearest.x + nearest.width + step, y = nearest.y + nearest.height + step} --down right
+				for cor, corner in ipairs(corners) do
+					if not banned[nearest.ID .. "c" .. cor] and #pancake.getPathObstacles(objectCopy, corner) == 0 then
+						points[#points + 1] = corner
+						points[#points].path = pancake.copyTable(point.path)
+						points[#points].path[#points[#points].path + 1] = {x = corner.x, y = corner.y}
+						banned[nearest.ID .. "c" .. cor] = true
+					end
+				end
+				table.remove(points, i)
+			end
+		else
+			result = true
+			path = nil
+		end
+	end
+	return path
+end
+
+function pancake.calculateDistance(p1, p2)
+	local h1 = p1.height or 0
+	local h2 = p2.height or 0
+	local w1 = p1.width or 0
+	local w2 = p2.width or 0
+	cp1 = {x = p1.x + w1/2, y = p1.y + h1/2}
+	cp2 = {x = p2.x + w2/2, y = p2.y +h2/2}
+	return math.sqrt((cp1.x - cp2.x)*(cp1.x - cp2.x) + (cp1.y - cp2.y)*(cp1.y - cp2.y))
+end
+
+function calcAboslute(p1, p2)
+	return {x = p2.x - p1.x, y = p2.y - p1.y}
 end
 
 ---------------------------------
@@ -1696,22 +2285,24 @@ function pancake.addSound (name, subfolder)
 	end
 end
 
-function pancake.playSound(name, overlap)
-if not pancake.soundMuted then
-	local overlap = overlap or false
-	local sounds = pancake.sounds
+function pancake.playSound(name, overlap, pitch)
+	local pitch = pitch or 1
+	local source
+	if not pancake.soundMuted then
+		local overlap = overlap or false
+		local sounds = pancake.sounds
 		if type(name) == "string" then
 			local sound = pancake.find(sounds, name, "name")
-			if sound.sound:isPlaying( ) and not overlap then
-				sound.sound:stop()
-			end
-				sound.sound:play()
+			source = sound.sound
 		else
-			if sounds[name].sound:isPlaying( ) and not overlap then
-				sounds[name].sound:stop()
-			end
-			sounds[name].sound:play()
+			source = sounds[name].sound
 		end
+		--Actually playing the source
+		if source:isPlaying( ) and not overlap then
+			source:stop()
+		end
+		source:setPitch(pitch)
+		source:play()
 	end
 end
 
@@ -1776,7 +2367,7 @@ local ret = false
 	if buttons[1] then
 		for i = 1, #buttons do
 			local button = buttons[i]
-			if pancake.isButtonClicked(button) then
+			if pancake.collisionCheck({x = x, y = y, width = 1, height = 1}, {x = button.x, y = button.y, width = button.width*button.scale, height = button.height*button.scale}) then
 				ret = true
 				if type(button.func) == "function" then
 					button.func()
@@ -1929,7 +2520,11 @@ end
 
 function pancake.keypressed(key)
 	local pressDone = false
-	if pancake.debugMode and key == "lshift" then
+	if pancake.loadAnimation and key == "space" then
+		pancake.loadAnimation = nil
+		pancake.paused = false
+		pancake.onLoad()
+	elseif pancake.debugMode and key == "rshift" then
 		switchEditMode()
 		pressDone = true
 	elseif pancake.debugMode and key == 'p' and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl"))then
@@ -1983,8 +2578,8 @@ function pancake.keypressed(key)
 				enterDebugString()
 			elseif letters[key] then
 				pressDone = true
-				local ch = pancake.boolConversion(love.keyboard.isDown("lshift") or love.keyboard.isDown("rshift"), string.upper(key), key)
-				if ch == "-" and love.keyboard.isDown("lshift") or love.keyboard.isDown("rshift") then
+				local ch = pancake.boolConversion(love.keyboard.isDown("rshift") or love.keyboard.isDown("rshift"), string.upper(key), key)
+				if ch == "-" and love.keyboard.isDown("rshift") or love.keyboard.isDown("rshift") then
 					ch = "_"
 				end
 				if focString and (focString.value == nil or not focString.type or type(focString.value) == "string" or (focString.type == "number" and (tonumber(ch) or (ch == "-" and debug.linePosition == 0) or (ch == "." and focString.value == pancake.round(focString.value))))) then
@@ -2049,7 +2644,7 @@ function pasteObject(x,y)
 	local x = x or pancake.window.x + pancake.window.width/2*pancake.window.pixelSize
 	local y = y or pancake.window.y + pancake.window.height/2*pancake.window.pixelSize
 	if pancake.debug.clipboard and pancake.collisionCheck({x = pancake.window.x, y = pancake.window.y, width = pancake.window.width*pancake.window.pixelSize, height = pancake.window.height*pancake.window.pixelSize}, {x=x,y=y,width=1,height=1}) then
-		local finalObject = deepcopy(pancake.debug.clipboard)
+		local finalObject = pancake.copyTable(pancake.debug.clipboard)
 		finalObject.x = (x - pancake.window.x)/pancake.window.pixelSize	+ pancake.window.offsetX
 		finalObject.y = (y - pancake.window.y)/pancake.window.pixelSize + pancake.window.offsetY
 		finalObject.ID = nil
@@ -2061,8 +2656,7 @@ function switchTarget(x,y, lock)
 	local window = pancake.window
 	if pancake.debugMode and pancake.collisionCheck({x = window.x, y = window.y, width = window.width*window.pixelSize, height = window.height*window.pixelSize},{x=x, y=y, height=1,width=1}) then
 		local ret = nil
-		for i = 1, #pancake.renderedObjects() do
-			local object = pancake.renderedObjects()[i]
+		for i, object in ipairs(pancake.objectsToRender) do
 			local layer = object.layer or 1
 			local hitboxes1 = {x = x, y = y, width = 1, height = 1}
 			local hitboxes2 = {x = pancake.windowToDisplay(object.x, 0, true).x, y = pancake.windowToDisplay(0, object.y, true).y, width = object.width*pancake.window.pixelSize, height = object.height*pancake.window.pixelSize}
@@ -2100,19 +2694,39 @@ function pancake.load(filename, type)
 end
 
 function pancake.saveState(filename)
-	local save = {}
-	save.objects = pancake.objects
-	save.timers = pancake.timers
+	local save = pancake.getState()
 	local string = smallfolk.dumps(save)
 	pancake.save(string, filename)
 end
 
 function pancake.loadState(filename)
-	local save = smallfolk.loads(pancake.load(filename))
-	pancake.objects = save.objects
-	pancake.timers = save.timers
+	local state = smallfolk.loads(pancake.load(filename))
+	pancake.setState(state)
 	pancake.lastSave = filename
 	pancake.debug.strings[1].value = filename
+end
+
+function pancake.getState()
+	local state = {}
+	state.objects = pancake.objects
+	state.timers = pancake.timers
+	state.visuals = pancake.visuals
+	state.lights = pancake.lights
+	return state
+end
+
+function pancake.setState(state)
+	pancake.objects = state.objects
+	pancake.timers = state.timers
+	pancake.visuals = state.visuals
+	pancake.lights = state.lights
+end
+
+function pancake.clearState()
+	pancake.objects = {}
+	pancake.visuals = {}
+	pancake.timers = {}
+	pancake.lights = {}
 end
 
 ------------------------
@@ -2170,7 +2784,7 @@ function pancake.getStringWidth(text)
 			if letters[char] then
 				ret = ret + letters[char].width + 1
 			else
-				ret = ret + 3
+				ret = ret + 4
 			end
 		end
 	end
@@ -2178,28 +2792,32 @@ function pancake.getStringWidth(text)
 end
 
 function printLetter(char, x, y, scale)
-	 local x = x or 0
-	 local y = y or 0
-	 local char = char or "a"
-	 local scale = scale or 1
-	 if letters[char] then
-		 local letter = letters[char]
-		 for i = 1, #letter do
-			local pixel
-			if type(letter[i]) == "number" then
-				pixel = {x = pix(letter[i]).x, y = pix(letter[i]).y}
-			else
-				pixel = {x = letter[i].x, y = letter[i].y}
-			end
-			love.graphics.rectangle("fill", x + (pixel.x - 1)*scale, y + (pixel.y - 1)*scale, scale, scale)
-		end
+	local x = x or 0
+	local y = y or 0
+	local char = char or "a"
+	local scale = scale or 1
+	if pancake.savedPseudoFonts and pancake.savedPseudoFonts[pancake.currentPseudoFont] and pancake.savedPseudoFonts[pancake.currentPseudoFont][char] then
+		love.graphics.draw(pancake.savedPseudoFonts[pancake.currentPseudoFont][char], x, y, 0, scale)
 	else
-		love.graphics.print("Your font doesn't have: " .. char)
-	end
+		 if letters[char] then
+			 local letter = letters[char]
+			 for i = 1, #letter do
+				local pixel
+				if type(letter[i]) == "number" then
+					pixel = {x = pix(letter[i]).x, y = pix(letter[i]).y}
+				else
+					pixel = {x = letter[i].x, y = letter[i].y}
+				end
+				love.graphics.rectangle("fill", x + (pixel.x - 1)*scale, y + (pixel.y - 1)*scale, scale, scale)
+			end
+		else
+			love.graphics.print("Your font doesn't have: " .. char)
+		end
+	 end
  end
 function defineLetters()
-	fonts = {}
-	liliputh = {}
+	local fonts = {}
+	local liliputh = {}
 	liliputh.a = {pix(13), pix(22), pix(24), pix(32), pix(33), pix(34), width = 3}
 	liliputh.b = {pix(11), pix(12), pix(13), pix(14), pix(22), pix(24), pix(33), width = 3}
 	liliputh.c = {pix(13), pix(22), pix(24), pix(32), pix(34), width = 3}
@@ -2215,7 +2833,7 @@ function defineLetters()
 	liliputh.m = {pix(13), pix(14), pix(22), pix(33), pix(42), pix(53), pix(54), width = 5}
 	liliputh.n = {pix(12), pix(13), pix(14), pix(22), pix(33), pix(34), width = 3}
 	liliputh.o = {pix(12), pix(13), pix(14), pix(22), pix(24), pix(32), pix(33), pix(34), width = 3}
-	liliputh.p = {pix(12), pix(13), pix(14), pix(15), pix(22), pix(24), pix(33), pix(34), width = 3}
+	liliputh.p = {pix(12), pix(13), pix(14), pix(15), pix(22), pix(24), pix(33), width = 3}
 	liliputh.r = {pix(12), pix(13), pix(14), pix(23), pix(32), width = 3}
 	liliputh.s = {pix(12), pix(14), pix(21), pix(23), pix(24), width = 2}
 	liliputh.t = {pix(12), pix(21), pix(22), pix(23), pix(24), pix(32), width = 3}
@@ -2236,7 +2854,7 @@ function defineLetters()
 	liliputh.I = {pix(11), pix(14), pix(21), pix(22), pix(23), pix(24), pix(31), pix(34),  width = 3}
 	liliputh.J = {pix(11), pix(13), pix(21), pix(24), pix(31), pix(34), pix(41), pix(42), pix(43), width = 4}
 	liliputh.K = {pix(11), pix(12), pix(13), pix(14), pix(23), pix(32), pix(33), pix(41), pix(44), width = 4}
-	liliputh.L = {pix(11), pix(12), pix(13), pix(14), pix(24), pix(34), pix(44), width = 4}
+	liliputh.L = {pix(11), pix(12), pix(13), pix(14), pix(24), pix(34), width = 3}
 	liliputh.M = {pix(11), pix(12), pix(13), pix(14), pix(22), pix(33),pix(42), pix(51), pix(52), pix(53), pix(54), width = 5}
 	liliputh.N = {pix(11), pix(12), pix(13), pix(14), pix(22), pix(33), pix(42), pix(43), pix(44), pix(41), width = 4}
 	liliputh.O = {pix(12), pix(13), pix(21), pix(24), pix(31), pix(34), pix(42), pix(43), width = 4}
@@ -2256,6 +2874,7 @@ function defineLetters()
 	liliputh["."] = {pix(14), width = 1}
 	liliputh[":"] = {pix(12), pix(14), width = 1}
 	liliputh[","] = {pix(14), pix(15), width = 1}
+	liliputh["'"] = {pix(11), pix(12), width = 1}
 	liliputh["1"] = {pix(12), pix(21), pix (22), pix(23), pix(24), width = 2}
 	liliputh["2"] = {pix(12), pix(14), pix(21), pix(24), pix(31), pix(33), pix(34), pix(42), pix(44), width = 4}
 	liliputh["3"] = {pix(11), pix(14), pix(21), pix(22), pix(24), pix(31), pix(32), pix(34), pix(33), width = 3}
@@ -2271,9 +2890,10 @@ function defineLetters()
 	liliputh["/"] = {pix(13), pix(14), pix(21),pix(22), width = 2}
 	liliputh["_"] = {pix(14), pix(24), pix(34), width = 3}
 	liliputh["|"] = {pix(11), pix(12), pix(13),pix(14), width = 1}
+	liliputh["+"] = {pix(13), pix(22), pix(23),pix(24), pix(33), width = 3}
 	fonts.liliputh = liliputh
 
-	david = {}
+	local david = {}
 	david.a = {pix(15), pix(16), pix(17), pix(24), pix(28), pix(34), pix(38), pix(44), pix(48), pix(54), pix(55), pix(56), pix(57), pix(68), width = 6}
 	david.b = {11,12,13,14,15,16,17,18,28,38,48,57,56,55,44,34,24, width = 5}
 	david.c = {pix(15), pix(16), pix(17), pix(24), pix(28), pix(34), pix(38), pix(44), pix(48), pix(55), pix(57), width = 5}
@@ -2347,8 +2967,111 @@ function defineLetters()
 	david["|"] = {12,13,14,15,16,17,18, width = 1}
 	fonts.david = david
 
+	local garry = {}
+	garry.A = {12,13,14,15, 21,23, 31,33, 41,43, 52,53,54,55, width = 5}
+	garry.B = {11,12,13,14,15, 21,23,25, 32,33,35, 44 , width = 4}
+	garry.C = {12,13,14, 21,25, 31,35, 41, 45, width = 4}
+	garry.D = {11,12,13,14,15, 21,25, 31,35, 42,43,44, width = 4}
+	garry.E = {11,12,13,14,15, 21,23,25, 31,33,35, 41,45, width = 4}
+	garry.F = {11,12,13,14,15, 21,23, 31,33, width = 4}
+	garry.G = {12,13,14, 21,25, 31,33,35, 41,43,44,45, width = 4}
+	garry.H = {11,12,13,14,15, 23, 33, 41,42,43,44,45, width = 4}
+	garry.I = {11,12,13,14,15, width = 1}
+	garry.J = {11,14, 21,25,31,35,41,42,43,44, width = 4}
+	garry.K = {11,12,13,14,15, 23, 32, 34, 41, 45, width = 4}
+	garry.L = {11,12,13,14,15, 25, 35, 45, width = 4}
+	garry.M = {11,12,13,14,15, 22, 33, 42, 51,52,53,54,55, width = 5}
+	garry.N = {11,12,13,14,15, 22, 33, 41,42,43,44,45, width = 4}
+	garry.O = {11,12,13,14,15, 21, 25, 31,35, 41,42,43,44,45, width = 4}
+	garry.P = {11,12,13,14,15, 21,23, 31,33, 42,43, width = 4}
+	garry.Q = {11,12,13,14,15, 21,25, 31,33,35, 41,44, 51,52,53,55, width = 5}
+	garry.R = {11,12,13,14,15, 21,23, 31,33,34, 42,43,45, width = 4}
+	garry.S = {12,15, 21,23,25, 31,33,35, 41,43,45, 54, width = 5}
+	garry.T = {11,21, 31,32,33,34,35, 41, 51, width = 5}
+	garry.U = {11,12,13,14, 25, 35, 41,42,43,44, width = 4}
+	garry.V = {11,12,13, 24, 35, 44, 51,52,53, width = 5}
+	garry.W = {11,12,13,14, 25, 33,34, 45, 51,52,53,54, width = 5}
+	garry.X = {11,12,14,15, 23,33, 41,42,44,45, width = 4}
+	garry.Y = {11,12, 23, 34,35, 43, 51,52, width = 5}
+	garry.Z = {11,15, 21,24,25, 31,33,35, 41,42,45, 51,55, width = 5}
+	garry.a = {13,14, 22,25,32,35, 42,43,44, 55, width = 5}
+	garry.b = {11,12,13,14,15, 22,25, 32,35, 43,44, width = 4}
+	garry.c = {13,14, 22,25, 32,35, 42,45, width = 4}
+	garry.d = {13,14, 22,25, 32,35, 41,42,43,44,55, width = 4}
+	garry.e = {13,14,15, 22,24,26, 32,34,36, 43,44, width = 4}
+	garry.f = {13, 22,23,24,25, 31, 33, width = 3}
+	garry.g = {13,14,16, 22,24,26, 32,34,36, 42,43,44,45, width = 4}
+	garry.h = {11,12,13,14,15, 23, 33, 44,45, width = 4}
+	garry.i = {11, 13,14,15, width = 1}
+	garry.j = {16, 21,23,24,25, width = 2}
+	garry.k = {11,12,13,14,15, 23, 33, 42,44,45, width = 4}
+	garry.l = {11,12,13,14,15, 25, width = 2}
+	garry.m = {12,13,14,15, 22, 33,34, 42, 53,54,55, width = 5}
+	garry.n = {12,13,14,15, 22, 32, 43,44,45, width = 4}
+	garry.o = {13,14, 22,25, 32,35, 43,44, width = 4}
+	garry.p = {12,13,14,15,16, 22,24, 32,34, 43,44, width = 4}
+	garry.q = {12,13,14, 22,24, 32,34, 42,43,44,45,46, 55 ,width = 5}
+	garry.r = {12, 23,24,25, 32, 42, width = 4}
+	garry.s = {13,15, 22,23,25, 32,34,35, 42,44, width = 4}
+	garry.t = {12, 21,22,23,24, 32,35, 42,44,45, width = 4}
+	garry.u = {12,13,14, 25, 35, 42,43,44,45, width = 4}
+	garry.v = {12,13,14, 25, 32,33,34, width = 3}
+	garry.w = {12,13,14, 25, 32,33,34, 45, 52,53,54, width = 5}
+	garry.x = {12,14,15, 23, 33, 42,44,45, width = 4}
+	garry.y = {12,13, 24,26, 34,36, 42,43,44,45, width = 4}
+	garry.z = {12,15, 22,24,25, 32,33,35, 42,45, width = 4}
+
+	garry['.'] = {15, width = 1}
+	garry[','] = {14,16,24,25, width = 2}
+	garry['!'] = {11,12,13,14, 16, width = 1}
+	garry['?'] = {11,12, 21, 24,26, 31,32,33, width = 3}
+	garry['"'] = {11,13,21,22, 41,43,51,52, width = 5}
+	garry["'"] = {11,13,21,22, width = 2}
+	garry[':'] = {13,15, width = 1}
+	garry['/'] = {15,16, 23,24, 31,32, width = 3}
+	garry['_'] = {15,25,35,45, width = 4}
+
+	garry['1'] = {12,15, 21,22,23,24,25, 35 , width = 3}
+	garry['2'] = {12,15, 21,24,25, 31,33,35, 42,45, width = 4}
+	garry['3'] = {12,14, 21,25, 31,33,35, 42,44, width = 4}
+	garry['4'] = {11,12,13,14, 24, 33,34,35, 44, width = 4}
+	garry['5'] = {11,12,13,15, 21,23,25, 31,33,35, 41,44, width = 4}
+	garry['6'] = {12,13,14, 21,23,25, 31,33,35, 44, width = 4}
+	garry['7'] = {11, 21,24,25, 31,33, 41,42, width = 4}
+	garry['8'] = {11,12,14,15, 21,23,25, 31,33,35, 41,42,44,45, width = 4}
+	garry['9'] = {11,12,13, 21,23,25, 31,33,35, 41,42,43,44, width = 4}
+	garry['0'] = {12,13,14, 21,23,25, 31,32,35, 42,43,44, width = 4}
+
+	fonts.garry = garry
+
+
 	pancake.fonts = fonts
-	letters = fonts.david
+	pancake.changeFont("garry")
+	pancake.savePseudoFont("garry")
+end
+
+function pancake.savePseudoFont(name)
+	love.graphics.push()
+	love.graphics.reset()
+	love.graphics.setDefaultFilter( "nearest", "nearest", 1)
+	local maxHeight = 64
+	if pancake.fonts[name] then
+		local currentFont = pancake.currentPseudoFont
+		pancake.changeFont(name)
+		if not pancake.savedPseudoFonts then
+			pancake.savedPseudoFonts = {}
+		end
+		pancake.savedPseudoFonts[name] = {}
+		for sign, pixels in pairs(letters) do
+			local canvas = love.graphics.newCanvas(pixels.width, maxHeight)
+			love.graphics.setCanvas(canvas)
+			printLetter(sign)
+			pancake.savedPseudoFonts[name][sign] = canvas
+		end
+		love.graphics.setCanvas()
+		pancake.changeFont(currentFont)
+	end
+	love.graphics.pop()
 end
 
 function pix(num)
@@ -2360,6 +3083,7 @@ end
 function pancake.changeFont(name)
 	local fonts = pancake.fonts
 	if fonts[name] then
+		pancake.currentPseudoFont = name
 		letters = fonts[name]
 	end
 end
@@ -2402,7 +3126,6 @@ function deglitchPhysicObjects()
 	end
 end
 
-
 -- UTITLITY FUNCTIONS!
 
 function getUsableChars()
@@ -2428,33 +3151,14 @@ function pancake.assignID(table)
 	return table
 end
 
-function pancake.smartDelete(table, value, searchParam)
-local value = value or #table
-local searchParam = searchParam or "name"
-local tableLength = #table
-	if type(value) == "number" and searchParam == "name" then
-		if table[value] and tableLength >= value then
-			for n=0, tableLength - value do
-				table[value+n] = table[value+n+1]
-			end
-			table[tableLength] = nil
+function pancake.smartDelete(t, value, searchParam)
+	local value = value
+	local searchParam = searchParam or "name"
+	for i, v in ipairs(t) do
+		if v[searchParam] == value then
+			table.remove(t, i)
+			break
 		end
-	else
-
-		for i=1, #table do
-			if table[i] and table[i][searchParam] == value then
-				value = i
-			end
-		end
-		if type(value) == "number" then
-			if table[value] and tableLength >= value then
-				for n=0, tableLength - value do
-					table[value+n] = table[value+n+1]
-				end
-				table[tableLength] = nil
-			end
-		end
-
 	end
 end
 
@@ -2466,6 +3170,16 @@ local ret = nil
 			ret = table[i]
 			ret.i = i
 			break
+		end
+	end
+	return ret
+end
+
+function pancake.checkTable(table, key, value)
+	local ret = {}
+	for i, o in ipairs(table) do
+		if o[key] == value then
+			ret[#ret + 1] = o
 		end
 	end
 	return ret
@@ -2509,8 +3223,13 @@ function pancake.sigma(value)
 	return ret
 end
 
-function pancake.round(number)
-	return math.floor(number) + pancake.boolConversion(number - math.floor(number) >= 0.5, 1, 0)
+function pancake.round(number, decPlace)
+	local decPlace = decPlace or 0
+	if decPlace == 0 then
+		return math.floor(number) + pancake.boolConversion(number - math.floor(number) >= 0.5, 1, 0)
+	else
+		return (math.floor(number*math.pow(10, decPlace)) + pancake.boolConversion(number*math.pow(10, decPlace) - math.floor(number*math.pow(10, decPlace)) >= 0.5, 1, 0))/math.pow(10, decPlace)
+	end
 end
 
 function calcOffset(value)
@@ -2518,11 +3237,22 @@ function calcOffset(value)
 end
 
 function pancake.sumTables(table1, table2)
-	for i = 1, #table2 do
-		table1[#table1 + 1] = table2[i]
+	local ret = {}
+	n = 0
+	for _,v in ipairs(table1) do n=n+1; ret[n]=v end
+	for _,v in ipairs(table2) do n=n+1; ret[n]=v end
+	return ret
+end
+
+function pancake.addTable(table1, table2)
+	if #table2 > 0 then
+		for i = 1, #table2 do
+			table1[#table1 + 1] = table2[i]
+		end
 	end
 	return table1
 end
+
 
 
 function pancake.getDirectionName(axis, direction)
@@ -2550,19 +3280,19 @@ function pancake.intoCaps(string)
 	return string.upper(string.sub(string,1,1)) .. string.sub(string,2,-1)
 end
 
-function deepcopy(orig)
-    local orig_type = type(orig)
-    local copy
-    if orig_type == 'table' then
-        copy = {}
-        for orig_key, orig_value in next, orig, nil do
-            copy[deepcopy(orig_key)] = deepcopy(orig_value)
-        end
-        setmetatable(copy, deepcopy(getmetatable(orig)))
-    else -- number, string, boolean, etc
-        copy = orig
-    end
-    return copy
+function pancake.copyTable(orig)
+  local orig_type = type(orig)
+  local copy
+  if orig_type == 'table' then
+      copy = {}
+      for orig_key, orig_value in next, orig, nil do
+          copy[pancake.copyTable(orig_key)] = pancake.copyTable(orig_value)
+      end
+      setmetatable(copy, pancake.copyTable(getmetatable(orig)))
+  else -- number, string, boolean, etc
+      copy = orig
+  end
+  return copy
 end
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------

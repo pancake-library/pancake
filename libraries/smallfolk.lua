@@ -1,4 +1,4 @@
-local M = {} 
+local M = {}
 local expect_object, dump_object
 local error, tostring, pairs, type, floor, huge, concat = error, tostring, pairs, type, math.floor, math.huge, table.concat
 
