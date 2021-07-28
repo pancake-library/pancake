@@ -13,7 +13,7 @@ local pancake = {	}
 ----																																									  	(Filip Król)			----
 ----------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------
----------------v.2.0(added edit mode, pseudo-font "david" and major performance tweaks!)------------------------
+---------------v.4.0(added pathfinding, lights, pseudofont "Garry" and some performence improvements)-----------
 --LIBRARIES USED:
 local smallfolk = require "libraries/smallfolk" --smallfolk: https://github.com/gvx/Smallfolk
 
