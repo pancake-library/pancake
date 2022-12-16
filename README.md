@@ -1,5 +1,7 @@
 # Pancake library by MightyPancake
 
+
+# THIS PROJECT IS NO LONGER MANTAINED!
 Pancake is a simple to use library that provides useful functions on tip of your fingers!
 
 ## It's easy
